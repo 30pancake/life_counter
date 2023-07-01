@@ -14,6 +14,9 @@
       };
     },
     methods: {
+      setLife(value:number): void {
+        this.life = value
+      },
       increaseLife(value:number): void {
         this.life += value;
       },
