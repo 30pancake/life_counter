@@ -1,6 +1,7 @@
 <template>
   <button @click="initializeLife">ライフ初期化</button>
   <life_counter ref="own_life_counter"/>
+  <counterList />
 </template>
 
 <script lang="ts">
