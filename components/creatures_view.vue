@@ -2,9 +2,9 @@
   <button @click="decreseCreature">-</button>
   <button @click="increseCreature">+</button>
   <label>{{ creature?.name }}</label>
-  <label>{{ powerToughnessText }}</label>
-  <label></label>
-  <label></label>
+  <label>{{ powerToughnessText() }}</label>
+  <label>{{ creatureCount - tapCount }}</label>
+  <label>{{ tapCount }}</label>
   <button @click="allUntap">All</button>
   <button @click="increaseUntap">-</button>
   <button @click="increaseTap">+</button>
@@ -54,6 +54,10 @@ interface CreatureViewInfo {
           this.tapCount--
         }
       },
+      setCreature(creature: Creature): void {
+        this.creatureCount = 1
+        this.creature = creature
+      }
     }
   }
 </script>
