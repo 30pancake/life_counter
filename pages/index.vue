@@ -8,6 +8,7 @@
 </template>
 
 <script lang="ts">
+  import Counter from '@/components/classes/counter.ts';
   import CreatureStatus from '@/components/classes/creature_status.ts';
   import WithStatusCreature from '@/components/classes/with_status_creature.ts';
 
@@ -29,6 +30,10 @@
       setCreature() {
         let status = new CreatureStatus();
         status.placeId = 1;
+        status.counters = [
+          Counter.create("+1/+1", "+1", 1, 1),
+          Counter.create("破壊不能", "破壊不能", 0, 0),
+        ];
         let newCreature = new WithStatusCreature();
         newCreature.name = "狼";
         newCreature.power = 2;

@@ -21,4 +21,14 @@ export default class Counter {
     this.powerBonus = source.powerBonus;
     this.toughnessBonus = source.toughnessBonus;
   }
+
+  //static method
+  static create(name: string, showText: string, powerBonus: number, toughnessBonus: number): Counter {
+    let counter = new Counter();
+    counter.name = name;
+    counter.showText = showText;
+    counter.powerBonus = powerBonus;
+    counter.toughnessBonus = toughnessBonus;
+    return counter;
+  }
 }

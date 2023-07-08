@@ -3,6 +3,7 @@
   <button @click="increseCreature()">+</button>
   <label>{{ getCreatureName }}</label>
   <label>{{ powerToughnessText }}</label>
+  <label>{{ getCounterText }}</label>
   <label>{{ getCreatureCount(false) }}</label>
   <label>{{ getCreatureCount(true) }}</label>
   <button @click="allUntap()">All</button>
@@ -39,12 +40,12 @@
       },
 
       getCreatureName(): string {
-        var creatures = this.getCreatureList;
+        let creatures = this.getCreatureList;
         return creatures.length > 0 ? creatures[0].name : "";
       },
 
       powerToughnessText(): string {
-        var creatures = this.getCreatureList;
+        let creatures = this.getCreatureList;
         var powerText = "-";
         var toughnessText = "-";
         if (creatures.length > 0) {
@@ -53,11 +54,28 @@
         }
         return powerText + " / " + toughnessText
       },
+
+      getCounterText(): string {
+        let creatures = this.getCreatureList;
+        if (creatures.length > 0) {
+          let counters = creatures[0].status.counters;
+          let counterShowTextSet = new Set(counters.map(x => x.showText));
+          let showTextAndCountList: { [key: string]: number; } = {};
+          counterShowTextSet.forEach(showText => {
+            let count = counters.filter(x => x.showText == showText).length;
+            showTextAndCountList[showText] = count;
+          });
+          return Object.entries(showTextAndCountList).map(([key, value]) => `${key}x${value.toString()}`)
+                                                    .join('/');
+        } else {
+          return "";
+        }
+      },
     },
 
     methods: {
       increseCreature(): void {
-        var creatures = this.getCreatureList;
+        let creatures = this.getCreatureList;
         if (creatures.length > 0) {
           var pushCreature = creatures[0].clone();
           this.creatureList.push(pushCreature);
@@ -72,24 +90,24 @@
         }
       },
       allTap(): void {
-        var creatures = this.getCreatureList;
+        let creatures = this.getCreatureList;
         creatures.forEach(c => {
           c.status.tap = true;
         });
       },
       allUntap(): void {
-        var creatures = this.getCreatureList;
+        let creatures = this.getCreatureList;
         creatures.forEach(c => {
           c.status.tap = false;
         });
       },
       increaseTap(): void {
-        var untapCreatures = this.getCreatureList
+        let untapCreatures = this.getCreatureList
                                  .filter(c => !c.status.tap);
         untapCreatures[untapCreatures.length - 1].status.tap = true;
       },
       increaseUntap(): void {
-        var tapCreatures = this.getCreatureList
+        let tapCreatures = this.getCreatureList
                                .filter(c => c.status.tap);
         tapCreatures[0].status.tap = false;
       },
