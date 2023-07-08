@@ -1,4 +1,7 @@
-class WithStatusCreature extends Creature {
+import Creature from '@/components/classes/creature.ts';
+import CreatureStatus from '@/components/classes/creature_status.ts';
+
+export default class WithStatusCreature extends Creature {
   //property
   status: CreatureStatus = new CreatureStatus();
 

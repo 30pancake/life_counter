@@ -1,4 +1,6 @@
-class CreatureStatus {
+import Counter from '@/components/classes/counter.ts';
+
+export default class CreatureStatus {
   //property
   placeId: number = 0;
   tap: boolean = false;

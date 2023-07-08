@@ -1,4 +1,4 @@
-class Creature {
+export default class Creature {
   //property
   name: string = "";
   power: number = 0;

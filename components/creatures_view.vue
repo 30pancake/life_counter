@@ -1,6 +1,4 @@
 <template>
-  <label>{{ id }}</label>
-  <label>{{ creatureList }}</label>
   <button @click="decreseCreature()">-</button>
   <button @click="increseCreature()">+</button>
   <label>{{ getCreatureName }}</label>
@@ -14,6 +12,8 @@
 </template>
 
 <script lang="ts">
+  import WithStatusCreature from '@/components/classes/with_status_creature.ts';
+
   export default {
     props: {
       id: {

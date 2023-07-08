@@ -1,4 +1,4 @@
-class Counter {
+export default class Counter {
   //property
   name: string = "";
   showText: string = "";

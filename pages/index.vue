@@ -8,6 +8,9 @@
 </template>
 
 <script lang="ts">
+  import CreatureStatus from '@/components/classes/creature_status.ts';
+  import WithStatusCreature from '@/components/classes/with_status_creature.ts';
+
   interface LifeCounterInfo {
     initialLifeValue: number
     creatureList: WithStatusCreature[]
