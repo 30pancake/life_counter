@@ -1,6 +1,6 @@
 class WithStatusCreature extends Creature {
   //property
-  status: CreatureStatus | null = null;
+  status: CreatureStatus = new CreatureStatus();
 
   //constructor
   constructor() {
@@ -11,23 +11,30 @@ class WithStatusCreature extends Creature {
   //修正値を加味したパワーを取得する
   getPower(): number {
     var ret = this.power;
-    if (this.status != null) {
-      ret += this.status!.power_bonus;
-      this.status!.counters.forEach(counter => {
-        ret += counter.power_bonus;
-      });
-    }
-    return ret;
+    ret += this.status.powerBonus;
+    this.status.counters.forEach(counter => {
+      ret += counter.powerBonus;
+    });
+   return ret;
   }
   //修正値を加味したタフネスを取得する
   getToughness(): number {
     var ret = this.toughness;
-    if (this.status != null) {
-      ret += this.status!.toughness_bonus;
-      this.status!.counters.forEach(counter => {
-        ret += counter.toughness_bonus;
-      });
-    }
+    ret += this.status.toughnessBonus;
+    this.status!.counters.forEach(counter => {
+      ret += counter.toughnessBonus;
+    });
     return ret;
+  }
+
+  clone(): WithStatusCreature{
+    var clone = new WithStatusCreature();
+    clone.copy(this);
+    return clone;
+  }
+
+  copy(source: WithStatusCreature): void {
+    super.copy(source);
+    this.status.copy(source.status);
   }
 }

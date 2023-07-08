@@ -1,11 +1,26 @@
 class CreatureStatus {
   //property
-  place_id: number = 0;
+  placeId: number = 0;
   tap: boolean = false;
   counters: Counter[] = [];
-  power_bonus: number = 0;
-  toughness_bonus: number = 0;
+  powerBonus: number = 0;
+  toughnessBonus: number = 0;
 
   //constructor
   constructor() { }
+
+  //methods
+  clone(): CreatureStatus {
+    var clone = new CreatureStatus();
+    clone.copy(this);
+    return clone;
+  }
+
+  copy(source: CreatureStatus): void {
+    this.placeId = source.placeId;
+    this.tap = source.tap;
+    this.powerBonus = source.powerBonus;
+    this.toughnessBonus = source.toughnessBonus;
+    this.counters = source.counters.map(c => c.clone());
+  }
 }
