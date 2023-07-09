@@ -1,18 +1,21 @@
 <template>
-  <button @click="decreseCreature()">-</button>
-  <button @click="increseCreature()">+</button>
-  <label>{{ getCreatureName }}</label>
-  <label>{{ powerToughnessText }}</label>
-  <label>{{ getCounterText }}</label>
-  <label>{{ getCreatureCount(false) }}</label>
-  <label>{{ getCreatureCount(true) }}</label>
-  <button @click="allUntap()">All</button>
-  <button @click="increaseUntap()">-</button>
-  <button @click="increaseTap()">+</button>
-  <button @click="allTap()">All</button>
+  <div @drop="dropHandler($event)" @dragover.prevent>
+    <button @click="decreseCreature()">-</button>
+    <button @click="increseCreature()">+</button>
+    <label>{{ getCreatureName }}</label>
+    <label>{{ powerToughnessText }}</label>
+    <label>{{ getCounterText }}</label>
+    <label>{{ getCreatureCount(false) }}</label>
+    <label>{{ getCreatureCount(true) }}</label>
+    <button @click="allUntap()">All</button>
+    <button @click="increaseUntap()">-</button>
+    <button @click="increaseTap()">+</button>
+    <button @click="allTap()">All</button>
+  </div>
 </template>
 
 <script lang="ts">
+  import Counter from '@/components/classes/counter.ts';
   import WithStatusCreature from '@/components/classes/with_status_creature.ts';
 
   export default {
@@ -110,6 +113,28 @@
         let tapCreatures = this.getCreatureList
                                .filter(c => c.status.tap);
         tapCreatures[0].status.tap = false;
+      },
+      dropHandler(event: DragEvent): void {
+        let dataText = event.dataTransfer?.getData('dataText');
+        if (dataText == undefined) {
+          return;
+        }
+        let counterData = JSON.parse(dataText);
+        if (typeof counterData === 'object' && counterData !== null) {
+          const {name, showText, powerBonus, toughnessBonus} = counterData;
+          if (typeof name === 'string' && typeof showText === 'string' && 
+              typeof powerBonus === 'number' && typeof toughnessBonus === 'number' ) {
+                let counter = Counter.create(name, showText, powerBonus, toughnessBonus);
+                this.appendCounter(counter);
+          }
+        }
+      },
+
+      appendCounter(counter: Counter): void {
+        let creatures = this.getCreatureList;
+        creatures.forEach(c => {
+          c.status.counters.push(counter.clone());          
+        });
       },
     },
   }
