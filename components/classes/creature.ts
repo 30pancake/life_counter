@@ -21,4 +21,14 @@ export default class Creature {
     this.toughness = source.toughness;
     this.ability = source.ability;
   }
+
+  //static method
+  static create(name: string, power: number, toughness: number, ability: string) {
+    let creature = new Creature();
+    creature.name = name;
+    creature.power = power;
+    creature.toughness = toughness;
+    creature.ability = ability;
+    return creature;
+  }
 }

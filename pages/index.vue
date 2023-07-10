@@ -3,6 +3,7 @@
   <button @click="setCreature">クリーチャーセット</button>
   <life_counter ref="own_life_counter"/>
   <counterList />
+  <creatureListView />
   <creatures_view
     :id="1" :creatureList="creatureList" />
 </template>
