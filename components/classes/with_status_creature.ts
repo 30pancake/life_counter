@@ -40,10 +40,14 @@ export default class WithStatusCreature extends Creature {
     super.copy(source);
     this.status.copy(source.status);
   }
+
+  copyCreature(source: Creature): void {
+    super.copy(source);
+  }
   //static method
   static create(creature: Creature, status: CreatureStatus): WithStatusCreature {
     let withStatusCreature = new WithStatusCreature();
-    (withStatusCreature as Creature).copy(creature);
+    withStatusCreature.copyCreature(creature);
     withStatusCreature.status = status.clone();
     return withStatusCreature;
   }
