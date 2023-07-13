@@ -22,6 +22,13 @@ export default class Creature {
     this.ability = source.ability;
   }
 
+  equals(dst: Creature): boolean {
+    return this.name == dst.name &&
+      this.power == dst.power &&
+      this.toughness == dst.toughness &&
+      this.ability == dst.ability;
+  }
+
   //static method
   static create(name: string, power: number, toughness: number, ability: string) {
     let creature = new Creature();
