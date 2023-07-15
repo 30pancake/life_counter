@@ -17,7 +17,8 @@
 <script lang="ts">
   import Counter from '@/components/classes/counter.ts';
   import WithStatusCreature from '@/components/classes/with_status_creature.ts';
-
+  import Global from '@/components/classes/global.ts';
+  
   export default {
     props: {
       id: {
@@ -115,18 +116,9 @@
         tapCreatures[0].status.tap = false;
       },
       dropHandler(event: DragEvent): void {
-        let dataText = event.dataTransfer?.getData('dataText');
-        if (dataText == undefined) {
-          return;
-        }
-        let counterData = JSON.parse(dataText);
-        if (typeof counterData === 'object' && counterData !== null) {
-          const {name, showText, powerBonus, toughnessBonus} = counterData;
-          if (typeof name === 'string' && typeof showText === 'string' && 
-              typeof powerBonus === 'number' && typeof toughnessBonus === 'number' ) {
-                let counter = Counter.create(name, showText, powerBonus, toughnessBonus);
-                this.appendCounter(counter);
-          }
+        let result = Global.tryGetDataFromDragEvent(event, Counter.parseJson);
+        if (result.success && result.data != undefined) {
+          this.appendCounter(result.data);
         }
       },
 

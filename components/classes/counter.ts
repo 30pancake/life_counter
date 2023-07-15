@@ -31,4 +31,16 @@ export default class Counter {
     counter.toughnessBonus = toughnessBonus;
     return counter;
   }
+
+  static parseJson(jsonText: string): Counter {
+    let counterData = JSON.parse(jsonText);
+    if (typeof counterData === 'object' && counterData !== null) {
+      const {name, showText, powerBonus, toughnessBonus} = counterData;
+      if (typeof name === 'string' && typeof showText === 'string' && 
+          typeof powerBonus === 'number' && typeof toughnessBonus === 'number' ) {
+            return Counter.create(name, showText, powerBonus, toughnessBonus);
+      }
+    }
+    throw new Error();
+  }
 }

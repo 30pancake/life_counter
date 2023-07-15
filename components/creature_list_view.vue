@@ -7,6 +7,7 @@
 
 <script lang="ts">
   import Creature from '@/components/classes/creature.ts';
+  import Global from '@/components/classes/global.ts';
 
   export default {
     data() {
@@ -22,8 +23,7 @@
       creatureDragStartHandler(event: DragEvent, creatureListKey: number) {
         if (creatureListKey in this.creatureList) {
           let creature = this.creatureList[creatureListKey];
-          let dataText = JSON.stringify(creature);
-          event.dataTransfer?.setData('dataText', dataText);
+          Global.setObjectDataToDragEvent(event, creature);
         }
       },
     },

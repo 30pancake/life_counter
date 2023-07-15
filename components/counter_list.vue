@@ -7,6 +7,7 @@
 
 <script lang="ts">
   import Counter from '@/components/classes/counter.ts';
+  import Global from '@/components/classes/global.ts';
 
   export default {
     data() {
@@ -21,8 +22,7 @@
       counterDragStartHandler(event: DragEvent, counterListKey: number) {
         if (counterListKey in this.counterList) {
           let counter = this.counterList[counterListKey];
-          let dataText = JSON.stringify(counter);
-          event.dataTransfer?.setData('dataText', dataText);
+          Global.setObjectDataToDragEvent(event, counter);
         }
       },
     },

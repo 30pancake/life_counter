@@ -38,4 +38,16 @@ export default class Creature {
     creature.ability = ability;
     return creature;
   }
+
+  static parseJson(jsonText: string): Creature {
+    let creatureData = JSON.parse(jsonText);
+    if (typeof creatureData === "object" && creatureData !== null) {
+        const { name, power, toughness, ability } = creatureData;
+        if (typeof name === "string" && typeof power === "number" &&
+            typeof toughness === "number" && typeof ability === "string") {
+            return Creature.create(name, power, toughness, ability);
+        }
+    }
+    throw new Error();
+  }
 }

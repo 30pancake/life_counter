@@ -9,6 +9,7 @@
   import Creature from '@/components/classes/creature.ts';
   import CreatureStatus from '@/components/classes/creature_status.ts';
   import WithStatusCreature from '@/components/classes/with_status_creature.ts';
+  import Global from '@/components/classes/global.ts';
 
   export default {
     props: {
@@ -26,25 +27,18 @@
     },
     methods: {
         dropHandler(event: DragEvent): void {
-            let dataText = event.dataTransfer?.getData("dataText");
-            if (dataText == undefined) {
-                return;
-            }
-            let creature = this.makeCreature(dataText);
+            let creature = this.makeCreature(event);
             let plateId = this.getRegisterPlaceId(this.creatureList, creature);
             let registerCreature = this.makeRegisterCreature(creature, plateId);
             this.creatureList.push(registerCreature);
         },
-        makeCreature(dataText: string): Creature {
-            let creatureData = JSON.parse(dataText);
-            if (typeof creatureData === "object" && creatureData !== null) {
-                const { name, power, toughness, ability } = creatureData;
-                if (typeof name === "string" && typeof power === "number" &&
-                    typeof toughness === "number" && typeof ability === "string") {
-                    return Creature.create(name, power, toughness, ability);
-                }
+        makeCreature(event: DragEvent): Creature {
+            let result = Global.tryGetDataFromDragEvent<Creature>(event, Creature.parseJson);
+            if (result.success && result.data != undefined) {
+                return result.data;
+            } else {
+                throw new Error("illegal creature data text.");
             }
-            throw new Error("illegal creature data text.");
         },
         makeStatus(id: number): CreatureStatus {
             let status = new CreatureStatus();
