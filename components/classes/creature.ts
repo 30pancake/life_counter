@@ -48,6 +48,6 @@ export default class Creature {
             return Creature.create(name, power, toughness, ability);
         }
     }
-    throw new Error();
+    throw new Error("jsonデータからのCreatureデータのパース失敗");
   }
 }

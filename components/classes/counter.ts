@@ -41,6 +41,6 @@ export default class Counter {
             return Counter.create(name, showText, powerBonus, toughnessBonus);
       }
     }
-    throw new Error();
+    throw new Error("jsonデータからのCounterデータのパース失敗");
   }
 }

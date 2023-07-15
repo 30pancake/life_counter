@@ -15,7 +15,7 @@ export default class Global {
           data: parseFunc(textData)
         }
       } else {
-        throw new Error();
+        throw new Error("eventからのテキストデータ取得失敗");
       }  
     } catch {
       return {
