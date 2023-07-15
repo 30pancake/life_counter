@@ -1,5 +1,5 @@
 <template>
-  <div @drop="dropHandler($event)" @dragover.prevent>
+  <div draggable="true" @dragstart="dragStartHandler($event)" @drop="dropHandler($event)" @dragover.prevent>
     <button @click="decreseCreature()">-</button>
     <button @click="increseCreature()">+</button>
     <label>{{ getCreatureName }}</label>
@@ -115,11 +115,27 @@
                                .filter(c => c.status.tap);
         tapCreatures[0].status.tap = false;
       },
+
       dropHandler(event: DragEvent): void {
-        let result = Global.tryGetDataFromDragEvent(event, Counter.parseJson);
+        try {
+          this.appendCounterByDragEvent(event);
+        } catch {
+          //ドロップされたデータが異なる場合があるのでErrorは虫
+        }
+        try {
+          this.exchangeIdByDragEvent(event);
+        } catch {
+          //ドロップされたデータが異なる場合があるのでErrorは虫
+        }
+
+        let result = Global.tryGetObjectDataFromDragEvent(event, Counter.parseJson);
         if (result.success && result.data != undefined) {
           this.appendCounter(result.data);
         }
+      },
+
+      dragStartHandler(event: DragEvent): void {
+        Global.setNumberDataToDragEvent(event, this.id);
       },
 
       appendCounter(counter: Counter): void {
@@ -128,6 +144,35 @@
           c.status.counters.push(counter.clone());          
         });
       },
+
+      appendCounterByDragEvent(event: DragEvent): void {
+        let result = Global.tryGetObjectDataFromDragEvent(event, Counter.parseJson);
+        if (result.success && result.data != undefined) {
+          this.appendCounter(result.data);
+        } else {
+          throw new Error("イベントデータからのCounterデータ取得失敗");
+        }
+      },
+
+      exchangeIdByDragEvent(event: DragEvent): void {
+        let result = Global.tryGetNumberDataFromDragEvent(event);
+        if (result.success && result.data != undefined) {
+          let exchangeId = result.data;
+          let exchangeCreatures = this.creatureList.filter(x => x.status.placeId == exchangeId);
+          let myId = this.id;
+          let myCreatures = this.getCreatureList;
+          this.setIdToCreatures(exchangeCreatures, myId);
+          this.setIdToCreatures(myCreatures, exchangeId);
+        } else {
+          throw new Error("イベントデータからのNumberデータ取得失敗");
+        }
+      },
+
+      setIdToCreatures(creatures: WithStatusCreature[], setId: number): void {
+        creatures.forEach(creature => {
+          creature.status.placeId = setId
+        });
+      }
     },
   }
 </script>

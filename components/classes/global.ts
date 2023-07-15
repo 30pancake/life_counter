@@ -6,7 +6,7 @@ export default class Global {
     event.dataTransfer?.setData(this.DRAG_TEXT_DATA_KEY, textData);
   }
 
-  static tryGetDataFromDragEvent<T>(event: DragEvent, parseFunc: (jsonText: string) => T): {success: boolean, data: T | undefined} {
+  static tryGetObjectDataFromDragEvent<T>(event: DragEvent, parseFunc: (jsonText: string) => T): {success: boolean, data: T | undefined} {
     try {
       let textData = event.dataTransfer?.getData(this.DRAG_TEXT_DATA_KEY);
       if (textData != undefined) {
@@ -24,4 +24,28 @@ export default class Global {
       }
     }
   }
+
+  static setNumberDataToDragEvent<T>(event: DragEvent, data: number): void {
+    let textData = data.toString();
+    event.dataTransfer?.setData(this.DRAG_TEXT_DATA_KEY, textData);
+  }
+
+  static tryGetNumberDataFromDragEvent(event: DragEvent): {success: boolean, data: number | undefined} {
+    try {
+      let textData = event.dataTransfer?.getData(this.DRAG_TEXT_DATA_KEY);
+      if (textData != undefined) {
+        return {
+          success: true,
+          data: parseInt(textData)
+        }
+      } else {
+        throw new Error("eventからのテキストデータ取得失敗");
+      }  
+    } catch {
+      return {
+        success: false,
+        data: undefined
+      }
+    }
+  } 
 }

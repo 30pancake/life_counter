@@ -33,7 +33,7 @@
             this.creatureList.push(registerCreature);
         },
         makeCreature(event: DragEvent): Creature {
-            let result = Global.tryGetDataFromDragEvent<Creature>(event, Creature.parseJson);
+            let result = Global.tryGetObjectDataFromDragEvent<Creature>(event, Creature.parseJson);
             if (result.success && result.data != undefined) {
                 return result.data;
             } else {
