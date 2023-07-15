@@ -127,11 +127,6 @@
         } catch {
           //ドロップされたデータが異なる場合があるのでErrorは虫
         }
-
-        let result = Global.tryGetObjectDataFromDragEvent(event, Counter.parseJson);
-        if (result.success && result.data != undefined) {
-          this.appendCounter(result.data);
-        }
       },
 
       dragStartHandler(event: DragEvent): void {
@@ -146,26 +141,17 @@
       },
 
       appendCounterByDragEvent(event: DragEvent): void {
-        let result = Global.tryGetObjectDataFromDragEvent(event, Counter.parseJson);
-        if (result.success && result.data != undefined) {
-          this.appendCounter(result.data);
-        } else {
-          throw new Error("イベントデータからのCounterデータ取得失敗");
-        }
+        let counter = Global.getObjectDataFromDragEvent(event, Counter.parseJson);
+        this.appendCounter(counter);
       },
 
       exchangeIdByDragEvent(event: DragEvent): void {
-        let result = Global.tryGetNumberDataFromDragEvent(event);
-        if (result.success && result.data != undefined) {
-          let exchangeId = result.data;
-          let exchangeCreatures = this.creatureList.filter(x => x.status.placeId == exchangeId);
-          let myId = this.id;
-          let myCreatures = this.getCreatureList;
-          this.setIdToCreatures(exchangeCreatures, myId);
-          this.setIdToCreatures(myCreatures, exchangeId);
-        } else {
-          throw new Error("イベントデータからのNumberデータ取得失敗");
-        }
+        let exchangeId = Global.getNumberDataFromDragEvent(event);
+        let exchangeCreatures = this.creatureList.filter(x => x.status.placeId == exchangeId);
+        let myId = this.id;
+        let myCreatures = this.getCreatureList;
+        this.setIdToCreatures(exchangeCreatures, myId);
+        this.setIdToCreatures(myCreatures, exchangeId);
       },
 
       setIdToCreatures(creatures: WithStatusCreature[], setId: number): void {

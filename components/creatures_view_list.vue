@@ -27,18 +27,22 @@
     },
     methods: {
         dropHandler(event: DragEvent): void {
-            let creature = this.makeCreature(event);
+            try {
+              this.pushCreatureByDragEvent(event);
+            } catch {
+              //異なるタイプのデータがドロップされる場合があるので処理しない
+            }
+            try {
+              this.assignNewIdToCreature(event);
+            } catch {
+              //異なるタイプのデータがドロップされる場合があるので処理しない
+            }
+        },
+        pushCreatureByDragEvent(event: DragEvent): void {
+            let creature = Global.getObjectDataFromDragEvent<Creature>(event, Creature.parseJson);
             let plateId = this.getRegisterPlaceId(this.creatureList, creature);
             let registerCreature = this.makeRegisterCreature(creature, plateId);
             this.creatureList.push(registerCreature);
-        },
-        makeCreature(event: DragEvent): Creature {
-            let result = Global.tryGetObjectDataFromDragEvent<Creature>(event, Creature.parseJson);
-            if (result.success && result.data != undefined) {
-                return result.data;
-            } else {
-                throw new Error("illegal creature data text.");
-            }
         },
         makeStatus(id: number): CreatureStatus {
             let status = new CreatureStatus();
@@ -63,6 +67,12 @@
             }
           }
         },
+        assignNewIdToCreature(event: DragEvent): void {
+          let newId = Math.max(...this.creatureList.map(x => x.status.placeId)) + 1;
+          let changeId = Global.getNumberDataFromDragEvent(event);
+          let changeCreature = this.creatureList.find(x => x.status.placeId == changeId);
+          changeCreature!.status.placeId = newId;
+        }
     },
 }
 </script>

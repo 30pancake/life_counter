@@ -6,17 +6,21 @@ export default class Global {
     event.dataTransfer?.setData(this.DRAG_TEXT_DATA_KEY, textData);
   }
 
+  static getObjectDataFromDragEvent<T>(event: DragEvent, parseFunc: (jsonText: string) => T): T {
+    let textData = event.dataTransfer?.getData(this.DRAG_TEXT_DATA_KEY);
+    if (textData != undefined) {
+      return parseFunc(textData);
+    } else {
+      throw new Error("eventからのテキストデータ取得失敗");
+    }
+  }
+
   static tryGetObjectDataFromDragEvent<T>(event: DragEvent, parseFunc: (jsonText: string) => T): {success: boolean, data: T | undefined} {
     try {
-      let textData = event.dataTransfer?.getData(this.DRAG_TEXT_DATA_KEY);
-      if (textData != undefined) {
-        return {
-          success: true,
-          data: parseFunc(textData)
-        }
-      } else {
-        throw new Error("eventからのテキストデータ取得失敗");
-      }  
+      return {
+        success: true,
+        data: this.getObjectDataFromDragEvent(event, parseFunc)
+      }
     } catch {
       return {
         success: false,
@@ -30,17 +34,22 @@ export default class Global {
     event.dataTransfer?.setData(this.DRAG_TEXT_DATA_KEY, textData);
   }
 
-  static tryGetNumberDataFromDragEvent(event: DragEvent): {success: boolean, data: number | undefined} {
-    try {
-      let textData = event.dataTransfer?.getData(this.DRAG_TEXT_DATA_KEY);
+  static getNumberDataFromDragEvent(event: DragEvent): number {
+    let textData = event.dataTransfer?.getData(this.DRAG_TEXT_DATA_KEY);
       if (textData != undefined) {
-        return {
-          success: true,
-          data: parseInt(textData)
-        }
+        return parseInt(textData);
       } else {
         throw new Error("eventからのテキストデータ取得失敗");
-      }  
+      }
+  }
+
+  static tryGetNumberDataFromDragEvent(event: DragEvent): {success: boolean, data: number | undefined} {
+    try {
+      let data = this.getNumberDataFromDragEvent(event);
+      return {
+        success: true,
+        data: data
+      }
     } catch {
       return {
         success: false,
