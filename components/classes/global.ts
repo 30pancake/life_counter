@@ -56,5 +56,18 @@ export default class Global {
         data: undefined
       }
     }
-  } 
+  }
+
+  static countGroup<T extends Equals>(array: T[]): Map<T, number> {
+    let groupedMap: Map<T, number> = new Map();
+    array.forEach(item => {
+      let keyItem = Array.from(groupedMap.keys()).find(x => x.equals(item));
+      if (keyItem != undefined) {
+        groupedMap.set(keyItem, groupedMap.get(keyItem)! + 1);
+      } else {
+        groupedMap.set(item, 1);
+      }
+    });
+    return groupedMap;
+  }
 }

@@ -32,16 +32,7 @@
     },
     computed: {
       getGroupedCounters(): Map<Counter, number> {
-        let groupedCounters: Map<Counter, number> = new Map();
-        this.counters.forEach(counter => {
-          let keyCounter = Array.from(groupedCounters.keys()).find(x => x.equals(counter));
-          if (keyCounter != undefined) {
-            groupedCounters.set(keyCounter, groupedCounters.get(keyCounter) + 1);
-          } else {
-            groupedCounters.set(counter, 1);
-          }
-        });
-        return groupedCounters;
+        return Global.countGroup(this.counters);
       },
     },
 

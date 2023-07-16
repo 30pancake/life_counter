@@ -1,4 +1,4 @@
-export default class Creature {
+export default class Creature implements Equals {
   //property
   name: string = "";
   power: number = 0;
@@ -22,11 +22,15 @@ export default class Creature {
     this.ability = source.ability;
   }
 
-  equals(dst: Creature): boolean {
-    return this.name == dst.name &&
-      this.power == dst.power &&
-      this.toughness == dst.toughness &&
-      this.ability == dst.ability;
+  equals(obj: object): boolean {
+    if (obj instanceof Creature) {
+      return this.name == obj.name &&
+      this.power == obj.power &&
+      this.toughness == obj.toughness &&
+      this.ability == obj.ability;
+    } else {
+      return false;
+    }
   }
 
   //static method

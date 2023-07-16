@@ -1,4 +1,4 @@
-export default class Counter {
+export default class Counter implements Equals {
   //property
   name: string = "";
   showText: string = "";
@@ -22,11 +22,15 @@ export default class Counter {
     this.toughnessBonus = source.toughnessBonus;
   }
 
-  equals(target: Counter): boolean {
-    return this.name == target.name &&
-    this.showText == target.showText &&
-    this.powerBonus == target.powerBonus &&
-    this.toughnessBonus == target.toughnessBonus;
+  equals(obj: object): boolean {
+    if (obj instanceof Counter) {
+      return this.name == obj.name &&
+      this.showText == obj.showText &&
+      this.powerBonus == obj.powerBonus &&
+      this.toughnessBonus == obj.toughnessBonus;
+    } else {
+      return false;
+    }
   }
 
   //static method
