@@ -22,6 +22,13 @@ export default class Counter {
     this.toughnessBonus = source.toughnessBonus;
   }
 
+  equals(target: Counter): boolean {
+    return this.name == target.name &&
+    this.showText == target.showText &&
+    this.powerBonus == target.powerBonus &&
+    this.toughnessBonus == target.toughnessBonus;
+  }
+
   //static method
   static create(name: string, showText: string, powerBonus: number, toughnessBonus: number): Counter {
     let counter = new Counter();
