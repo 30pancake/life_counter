@@ -37,11 +37,13 @@ export default class Global {
   static getNumberDataFromDragEvent(event: DragEvent): number {
     let textData = event.dataTransfer?.getData(this.DRAG_TEXT_DATA_KEY);
       if (textData != undefined) {
-        return parseInt(textData);
-      } else {
-        throw new Error("eventからのテキストデータ取得失敗");
+        let tempInt = parseInt(textData);
+        if (!Number.isNaN(tempInt)) {
+          return parseInt(textData);
+        }
       }
-  }
+      throw new Error("eventからのテキストデータ取得失敗");
+    }
 
   static tryGetNumberDataFromDragEvent(event: DragEvent): {success: boolean, data: number | undefined} {
     try {
