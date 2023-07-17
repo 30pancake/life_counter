@@ -1,10 +1,10 @@
 <template>
   <button @click="initializeLife">ライフ初期化</button>
   <button @click="setCreature">クリーチャーセット</button>
-  <life_counter ref="own_life_counter"/>
-  <counterList />
-  <creatureListView />
-  <creaturesViewList :creatureList="creatureList" />
+  <playerInfoView ref="own_life_counter"/>
+  <countersSourceView />
+  <creaturesSourceView />
+  <creaturesUnitListView :creatureList="creatureList" />
 </template>
 
 <script lang="ts">

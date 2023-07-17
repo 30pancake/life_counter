@@ -19,12 +19,12 @@
   import Counter from '@/components/classes/counter.ts';
   import Global from '@/components/classes/global.ts';
 
-  interface LifeCounterInfo {
+  interface PlayerInfo {
     life: number,
     counters: Counter[],
   }
   export default {
-    data(): LifeCounterInfo {
+    data(): PlayerInfo {
       return {
         life: 20,
         counters: [],

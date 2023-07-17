@@ -1,7 +1,7 @@
 <template>
   <label @drop="dropHandler($event)" @dragover.prevent>クリーチャーを追加</label>
   <div v-for="placeId in getPlaceIdList">
-    <CreaturesView :id=placeId :creatureList="creatureList" />
+    <CreaturesUnitView :id=placeId :creatureList="creatureList" />
   </div>
 </template>
 
