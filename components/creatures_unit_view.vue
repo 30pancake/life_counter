@@ -1,16 +1,46 @@
 <template>
   <div draggable="true" @dragstart="dragStartHandler($event)" @drop="dropHandler($event)" @dragover.prevent>
-    <button @click="decreseCreature()">-</button>
-    <button @click="increseCreature()">+</button>
-    <label>{{ getCreatureName }}</label>
-    <label>{{ powerToughnessText }}</label>
-    <label>{{ getCounterText }}</label>
-    <label>{{ getCreatureCount(false) }}</label>
-    <label>{{ getCreatureCount(true) }}</label>
-    <button @click="allUntap()">All</button>
-    <button @click="increaseUntap()">-</button>
-    <button @click="increaseTap()">+</button>
-    <button @click="allTap()">All</button>
+    <div class="flex flex-row">
+      <div class="w-1/2 flex justify-center">
+        <button class="red-button" @click="decreseCreature()">-</button>
+      </div>
+      <div class="w-1/2 flex justify-center">
+        <button class="blue-button" @click="increseCreature()">+</button>
+      </div>
+    </div>
+    <div class="flex flex-row">
+      <div class="w-1/2 flex justify-center">
+        <label>{{ getCreatureName }}</label>
+      </div>
+      <div class="w-1/2 flex justify-center">
+        <label>{{ powerToughnessText }}</label>
+      </div>
+    </div>
+    <div class="flex justify-center">
+      <label>{{ getCounterText }}</label>
+    </div>
+    <div class="flex flex-row">
+      <div class="w-1/2 flex justify-center">
+        <label>{{ getCreatureCount(false) }}</label>
+      </div>
+      <div class="w-1/2 flex justify-center">
+        <label>{{ getCreatureCount(true) }}</label>
+      </div>
+    </div>
+    <div class="flex flex-row">
+      <div class="w-1/4 flex justify-center">
+        <button class="red-button" @click="allUntap()">All</button>
+      </div>
+      <div class="w-1/4 flex justify-center">
+        <button class="red-button" @click="increaseUntap()">-</button>
+      </div>
+      <div class="w-1/4 flex justify-center">
+        <button class="blue-button" @click="increaseTap()">+</button>
+      </div>
+      <div class="w-1/4 flex justify-center">
+        <button class="blue-button" @click="allTap()">All</button>
+      </div>
+    </div>
   </div>
 </template>
 
