@@ -1,16 +1,20 @@
 <template>
-  <div @drop="dropHandler($event)" @dragover.prevent>
-    <div>
-      <button @click="decreaseLife(5)">-5</button>
-      <button @click="decreaseLife(1)">-</button>
-      <label>{{ life }}</label>
-      <button @click="increaseLife(1)">+</button>
-      <button @click="increaseLife(5)">+5</button>
+  <div class="flex" @drop="dropHandler($event)" @dragover.prevent>
+    <div class="flex justify-center items-center">
+      <div>
+        <button class="red-button short" @click="decreaseLife(5)">-5</button>
+        <button class="red-button short" @click="decreaseLife(1)">-</button>
+        <label>{{ life }}</label>
+        <button class="blue-button short" @click="increaseLife(1)">+</button>
+        <button class="blue-button short" @click="increaseLife(5)">+5</button>
+      </div>
     </div>
-    <div v-for="[counter, count] in getGroupedCounters">
-      <button @click="decreseCounter(counter)">-</button>
-      <label>{{ getCounterText(counter, count) }}</label>
-      <button @click="increseCounter(counter)">+</button>
+    <div>
+      <div v-for="[counter, count] in getGroupedCounters">
+        <button class="red-button short" @click="decreseCounter(counter)">-</button>
+        <label class="middle">{{ getCounterText(counter, count) }}</label>
+        <button class="blue-button short" @click="increseCounter(counter)">+</button>
+      </div>
     </div>
   </div>
 </template>
