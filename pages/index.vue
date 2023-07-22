@@ -1,10 +1,24 @@
 <template>
-  <button @click="initializeLife">ライフ初期化</button>
-  <button @click="setCreature">クリーチャーセット</button>
-  <playerInfoView ref="own_life_counter"/>
-  <countersSourceView />
-  <creaturesSourceView />
-  <creaturesUnitListView :creatureList="creatureList" />
+  <div class="h-screen flex">
+    <div class="flex flex-col flex-grow">
+      <div>
+        <creaturesUnitListView :creatureList="creatureList" />
+      </div>
+      <div class="mt-auto my-2">
+        <playerInfoView ref="own_life_counter"/>
+      </div>
+    </div>
+    <div class="flex flex-col flex-none w-40">
+      <div class="h-1/2">
+        <label>クリーチャーリスト</label>
+        <creaturesSourceView />
+      </div>
+      <div class="h-1/2">
+        <label>カウンターリスト</label>
+        <countersSourceView />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
