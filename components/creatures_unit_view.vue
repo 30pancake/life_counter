@@ -1,45 +1,26 @@
 <template>
   <div draggable="true" @dragstart="dragStartHandler($event)" @drop="dropHandler($event)" @dragover.prevent>
-    <div class="flex flex-row">
-      <div class="w-1/2 flex justify-center">
-        <button class="red-button" @click="decreseCreature()">-</button>
-      </div>
-      <div class="w-1/2 flex justify-center">
-        <button class="blue-button" @click="increseCreature()">+</button>
-      </div>
+    <div class="flex flex-row justify-around">
+      <button class="red-button" @click="decreseCreature()">-</button>
+      <label>{{ getTotalCreatureCount }}</label>
+      <button class="blue-button" @click="increseCreature()">+</button>
     </div>
-    <div class="flex flex-row">
-      <div class="w-1/2 flex justify-center">
-        <label>{{ getCreatureName }}</label>
-      </div>
-      <div class="w-1/2 flex justify-center">
-        <label>{{ powerToughnessText }}</label>
-      </div>
+    <div class="flex flex-row justify-around">
+      <label>{{ getCreatureName }}</label>
+      <label>{{ powerToughnessText }}</label>
     </div>
     <div class="flex justify-center">
       <label>{{ getCounterText }}</label>
     </div>
-    <div class="flex flex-row">
-      <div class="w-1/2 flex justify-center">
-        <label>{{ getCreatureCount(false) }}</label>
-      </div>
-      <div class="w-1/2 flex justify-center">
-        <label>{{ getCreatureCount(true) }}</label>
-      </div>
+    <div class="flex flex-row justify-around">
+      <label>{{ getCreatureCount(false) }}</label>
+      <label>{{ getCreatureCount(true) }}</label>
     </div>
-    <div class="flex flex-row">
-      <div class="w-1/4 flex justify-center">
-        <button class="red-button" @click="allUntap()">All</button>
-      </div>
-      <div class="w-1/4 flex justify-center">
-        <button class="red-button" @click="increaseUntap()">-</button>
-      </div>
-      <div class="w-1/4 flex justify-center">
-        <button class="blue-button" @click="increaseTap()">+</button>
-      </div>
-      <div class="w-1/4 flex justify-center">
-        <button class="blue-button" @click="allTap()">All</button>
-      </div>
+    <div class="flex flex-row justify-around">
+      <button class="red-button" @click="allUntap()">All</button>
+      <button class="red-button" @click="increaseUntap()">-</button>
+      <button class="blue-button" @click="increaseTap()">+</button>
+      <button class="blue-button" @click="allTap()">All</button>
     </div>
   </div>
 </template>
@@ -64,6 +45,10 @@
     computed: {
       getCreatureList(): Array<WithStatusCreature> {
         return this.creatureList.filter(c => c.status!.placeId == this.id)
+      },
+
+      getTotalCreatureCount(): number {
+        return this.getCreatureList.length;
       },
 
       getCreatureCount(): (tap: boolean) => number {
@@ -99,7 +84,7 @@
             let count = counters.filter(x => x.showText == showText).length;
             showTextAndCountList[showText] = count;
           });
-          return Object.entries(showTextAndCountList).map(([key, value]) => `${key}x${value.toString()}`)
+          return Object.entries(showTextAndCountList).map(([key, value]) => value == 1 ? `${key}` : `${key}x${value.toString()}`)
                                                     .join('/');
         } else {
           return "";
