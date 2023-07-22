@@ -65,13 +65,11 @@
 
       powerToughnessText(): string {
         let creatures = this.getCreatureList;
-        var powerText = "-";
-        var toughnessText = "-";
         if (creatures.length > 0) {
-          powerText = creatures[0].getPower().toString();
-          toughnessText = creatures[0].getToughness().toString();
+          return creatures[0].getPowerToughnessText();
+        } else {
+          return "- / -";
         }
-        return powerText + " / " + toughnessText
       },
 
       getCounterText(): string {

@@ -1,7 +1,7 @@
 <template>
   <ul>
     <li v-for="(creature, key) in creatureList" draggable="true"
-      @dragstart="creatureDragStartHandler($event, key)">{{ creature.name }}</li>
+      @dragstart="creatureDragStartHandler($event, key)">{{ creature.name + " " + creature.getPowerToughnessText() }}</li>
   </ul>
 </template>
 

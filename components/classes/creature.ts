@@ -9,6 +9,10 @@ export default class Creature implements Equals {
   constructor() { }
 
   //methods
+  getPowerToughnessText(): string {
+    return this.power + " / " + this.toughness
+  }
+
   clone(): Creature {
     var clone = new Creature();
     clone.copy(this);
