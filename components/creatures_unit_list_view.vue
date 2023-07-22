@@ -1,7 +1,14 @@
 <template>
-  <label @drop="dropHandler($event)" @dragover.prevent>クリーチャーを追加</label>
-  <div class="flex flex-row">
-    <div class="mx-2" v-for="placeId in getPlaceIdList">
+  <div class="flex flex-row flex-wrap">
+    <div class="m-2 w-36 h-48 border rounded" @drop="dropHandler($event)" @dragover.prevent>
+      <div class="flex justify-center">
+        <label>クリーチャーを追加</label>
+      </div>
+      <div class="flex justify-center">
+        <label class="text-7xl text-gray-500">+</label>
+      </div>
+    </div>
+    <div class="m-2" v-for="placeId in getPlaceIdList">
       <CreaturesUnitView class="w-36 h-48 border rounded" :id=placeId :creatureList="creatureList" />
     </div>
   </div>
