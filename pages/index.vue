@@ -11,7 +11,7 @@
     <div class="flex flex-col flex-none w-40">
       <div class="h-1/2">
         <label>クリーチャーリスト</label>
-        <creaturesSourceView />
+        <creaturesSourceView ref="creatures_source" @appendCreatureRequired="openModal" />
       </div>
       <div class="h-1/2">
         <label>カウンターリスト</label>
@@ -19,22 +19,29 @@
       </div>
     </div>
   </div>
+  <!-- モーダル -->
+  <modalView :show="isModalOpen">
+    <newCreatureView @end="closeModal" @creatureCreated="appendCreature"/>
+  </modalView>
 </template>
 
 <script lang="ts">
+  import Creature from '@/components/classes/creature.ts';
   import Counter from '@/components/classes/counter.ts';
   import CreatureStatus from '@/components/classes/creature_status.ts';
   import WithStatusCreature from '@/components/classes/with_status_creature.ts';
 
   interface LifeCounterInfo {
     initialLifeValue: number
-    creatureList: WithStatusCreature[]
+    creatureList: WithStatusCreature[],
+    isModalOpen: boolean,
   }
   export default {
     data(): LifeCounterInfo {
       return {
         initialLifeValue: 20,
         creatureList: [],
+        isModalOpen: false,
       };
     },
     methods: {
@@ -55,6 +62,15 @@
         newCreature.status = status;
         this.creatureList.push(newCreature);
       },
+      openModal(): void {
+        this.isModalOpen = true;
+      },
+      closeModal(): void {
+        this.isModalOpen = false;
+      },
+      appendCreature(creature: Creature): void {
+        this.$refs.creatures_source.appendCreature(creature);
+      }
     },
     mounted() {
       this.initializeLife();
