@@ -11,17 +11,20 @@
     <div class="flex flex-col flex-none w-40">
       <div class="h-1/2">
         <label>クリーチャーリスト</label>
-        <creaturesSourceView ref="creatures_source" @appendCreatureRequired="openModal" />
+        <creaturesSourceView ref="creatures_source" @appendCreatureRequired="openNewCreatureModal" />
       </div>
       <div class="h-1/2">
         <label>カウンターリスト</label>
-        <countersSourceView />
+        <countersSourceView  ref="counters_source"  @appendCounterRequired="openNewCounterModal" />
       </div>
     </div>
   </div>
   <!-- モーダル -->
-  <modalView :show="isModalOpen">
-    <newCreatureView @end="closeModal" @creatureCreated="appendCreature"/>
+  <modalView :show="isNewCreatureModalOpen">
+    <newCreatureView @end="closeNewCreatureModal" @creatureCreated="appendCreature"/>
+  </modalView>
+  <modalView :show="isNewCounterModalOpen">
+    <newCounterView @end="closeNewCountereModal" @counterCreated="appendCounter"/>
   </modalView>
 </template>
 
@@ -34,14 +37,16 @@
   interface LifeCounterInfo {
     initialLifeValue: number
     creatureList: WithStatusCreature[],
-    isModalOpen: boolean,
+    isNewCreatureModalOpen: boolean,
+    isNewCounterModalOpen: boolean,
   }
   export default {
     data(): LifeCounterInfo {
       return {
         initialLifeValue: 20,
         creatureList: [],
-        isModalOpen: false,
+        isNewCreatureModalOpen: false,
+        isNewCounterModalOpen: false,
       };
     },
     methods: {
@@ -62,15 +67,24 @@
         newCreature.status = status;
         this.creatureList.push(newCreature);
       },
-      openModal(): void {
-        this.isModalOpen = true;
+      openNewCreatureModal(): void {
+        this.isNewCreatureModalOpen = true;
       },
-      closeModal(): void {
-        this.isModalOpen = false;
+      closeNewCreatureModal(): void {
+        this.isNewCreatureModalOpen = false;
       },
       appendCreature(creature: Creature): void {
         this.$refs.creatures_source.appendCreature(creature);
-      }
+      },
+      openNewCounterModal(): void {
+        this.isNewCounterModalOpen = true;
+      },
+      closeNewCountereModal(): void {
+        this.isNewCounterModalOpen = false;
+      },
+      appendCounter(creature: Creature): void {
+        this.$refs.counters_source.appendCounter(creature);
+      },
     },
     mounted() {
       this.initializeLife();

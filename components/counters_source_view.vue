@@ -1,7 +1,9 @@
 <template>
   <ul>
-    <li v-for="(counter, key) in counterList" draggable="true"
-      @dragstart="counterDragStartHandler($event, key)">{{ counter.name }}</li>
+    <li v-for="counter in counterList" draggable="true"
+      @dragstart="counterDragStartHandler($event, counter)">{{ counter.name }}
+    </li>
+    <button class="gray-button" @click="handleAppendButtonClick()">追加</button>
   </ul>
 </template>
 
@@ -12,18 +14,21 @@
   export default {
     data() {
       return {
-        counterList: {
-          1 : Counter.create('+1/+1', "+1", 1, 1),
-          2 : Counter.create('毒カウンター', "毒", 0, 0),
-        },
+        counterList: [
+          Counter.create('+1/+1', "+1", 1, 1),
+          Counter.create('毒カウンター', "毒", 0, 0),
+        ]
       }
     },
     methods: {
-      counterDragStartHandler(event: DragEvent, counterListKey: number) {
-        if (counterListKey in this.counterList) {
-          let counter = this.counterList[counterListKey];
-          Global.setObjectDataToDragEvent(event, counter);
-        }
+      counterDragStartHandler(event: DragEvent, counter: Counter) {
+        Global.setObjectDataToDragEvent(event, counter);
+      },
+      appendCounter(counter: Counter): void {
+        this.counterList.push(counter);
+      },
+      handleAppendButtonClick(): void {
+        this.$emit('appendCounterRequired');
       },
     },
   }
