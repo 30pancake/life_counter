@@ -30,6 +30,10 @@ export default class WithStatusCreature extends Creature {
     return ret;
   }
 
+  getCorrectedPowerToughnessText(): string {
+    return this.getPower() + " / " + this.getToughness();
+  }
+
   clone(): WithStatusCreature{
     var clone = new WithStatusCreature();
     clone.copy(this);

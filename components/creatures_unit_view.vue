@@ -66,7 +66,7 @@
       powerToughnessText(): string {
         let creatures = this.getCreatureList;
         if (creatures.length > 0) {
-          return creatures[0].getPowerToughnessText();
+          return creatures[0].getCorrectedPowerToughnessText();
         } else {
           return "- / -";
         }
