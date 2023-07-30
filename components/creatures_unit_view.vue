@@ -76,10 +76,10 @@
         let creatures = this.getCreatureList;
         if (creatures.length > 0) {
           let counters = creatures[0].status.counters;
-          let counterShowTextSet = new Set(counters.map(x => x.showText));
+          let counterShowTextSet = new Set(counters.map(x => x.name));
           let showTextAndCountList: { [key: string]: number; } = {};
           counterShowTextSet.forEach(showText => {
-            let count = counters.filter(x => x.showText == showText).length;
+            let count = counters.filter(x => x.name == showText).length;
             showTextAndCountList[showText] = count;
           });
           return Object.entries(showTextAndCountList).map(([key, value]) => value == 1 ? `${key}` : `${key}x${value.toString()}`)

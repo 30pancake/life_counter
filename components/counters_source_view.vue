@@ -19,8 +19,8 @@
     data() {
       return {
         counterList: [
-          Counter.create('+1/+1', "+1", 1, 1),
-          Counter.create('毒カウンター', "毒", 0, 0),
+          Counter.create("+1", 1, 1),
+          Counter.create("毒", 0, 0),
         ],
         showingModal: false,
       }
