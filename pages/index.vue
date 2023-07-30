@@ -17,6 +17,11 @@
         <label>カウンターリスト</label>
         <countersSourceView  ref="counters_source"  @appendCounterRequired="openNewCounterModal" />
       </div>
+      <div class="fixed left-0 bottom-0">
+        <button class="gray-button" @click="UntapAll">全クリーチャーをアンタップ</button>
+        <button class="gray-button" @click="destloyAllCreatures">全クリーチャーを破壊</button>
+        <button class="gray-button" @click="initializeLife">ライフを初期化</button>
+      </div>
     </div>
   </div>
   <!-- モーダル -->
@@ -84,6 +89,16 @@
       },
       appendCounter(creature: Creature): void {
         this.$refs.counters_source.appendCounter(creature);
+      },
+      destloyAllCreatures(): void {
+        if (confirm("全クリーチャーを破壊します。よろしいですか？")){
+          this.creatureList.splice(0);
+        }
+      },
+      UntapAll(): void {
+        this.creatureList.forEach(c => {
+          c.status.tap = false;
+        });
       },
     },
     mounted() {
