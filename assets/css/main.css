@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  button {
+    @apply text-lg rounded px-2 m-1;
+  }
+  label {
+    @apply inline-block text-center text-lg m-1;
+  }
+  input {
+    @apply border-2 m-1;
+  }
+}
+
+@layer components {
+  /* ボタン色設定 */
+  .red-button {
+    @apply bg-red-500 hover:bg-red-400 text-white;
+  }
+  .blue-button {
+    @apply bg-blue-500 hover:bg-blue-400 text-white;
+  }
+  .gray-button {
+    @apply bg-gray-500 hover:bg-blue-400 text-white;
+  }
+  /* コントロール形 */
+  .short {
+    @apply w-9;
+  }
+  .middle {
+    @apply w-12;
+  }
+  /* モーダル */
+  .modal {
+    @apply z-50 h-screen w-screen flex justify-center items-center top-0 fixed inset-0 bg-gray-800 bg-opacity-30;
+  }
+}
