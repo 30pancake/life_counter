@@ -3,8 +3,12 @@
     <li v-for="counter in counterList" draggable="true"
       @dragstart="counterDragStartHandler($event, counter)">{{ counter.name }}
     </li>
-    <button class="gray-button" @click="handleAppendButtonClick()">追加</button>
+    <button class="gray-button" @click="showModal()">追加</button>
   </ul>
+  <!-- モーダル -->
+  <modalView :show="showingModal">
+    <NewCounterView @end="closeModal" @counterCreated="appendCounter"/>
+  </modalView>
 </template>
 
 <script lang="ts">
@@ -17,7 +21,8 @@
         counterList: [
           Counter.create('+1/+1', "+1", 1, 1),
           Counter.create('毒カウンター', "毒", 0, 0),
-        ]
+        ],
+        showingModal: false,
       }
     },
     methods: {
@@ -27,8 +32,11 @@
       appendCounter(counter: Counter): void {
         this.counterList.push(counter);
       },
-      handleAppendButtonClick(): void {
-        this.$emit('appendCounterRequired');
+      showModal(): void {
+        this.showingModal = true;
+      },
+      closeModal(): void {
+        this.showingModal = false;
       },
     },
   }

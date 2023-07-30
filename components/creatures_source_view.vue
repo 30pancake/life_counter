@@ -3,8 +3,12 @@
     <li v-for="creature in creatureList" draggable="true"
       @dragstart="creatureDragStartHandler($event, creature)">{{ creature.name + " " + creature.getPowerToughnessText() }}
     </li>
-    <button class="gray-button" @click="handleAppendButtonClick()">追加</button>
+    <button class="gray-button" @click="showModal">追加</button>
   </ul>
+  <!-- モーダル -->
+  <modalView :show="showingModal">
+    <NewCreatureView @end="closeModal" @creatureCreated="appendCreature"/>
+  </modalView>
 </template>
 
 <script lang="ts">
@@ -19,6 +23,7 @@
           Creature.create("狼", 2, 2, ""),
           Creature.create("鳥", 1, 1, "飛行"),
         ],
+        showingModal: false,
       }
     },
     methods: {
@@ -28,8 +33,11 @@
       appendCreature(creature: Creature): void {
         this.creatureList.push(creature);
       },
-      handleAppendButtonClick(): void {
-        this.$emit('appendCreatureRequired');
+      showModal(): void {
+        this.showingModal = true;
+      },
+      closeModal(): void {
+        this.showingModal = false;
       },
     },
   }

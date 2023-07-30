@@ -47,10 +47,7 @@ export default class Counter implements Equals {
     let counterData = JSON.parse(jsonText);
     if (typeof counterData === 'object' && counterData !== null) {
       const {name, showText, powerBonus, toughnessBonus} = counterData;
-      if (typeof name === 'string' && typeof showText === 'string' && 
-          typeof powerBonus === 'number' && typeof toughnessBonus === 'number' ) {
-            return Counter.create(name, showText, powerBonus, toughnessBonus);
-      }
+      return Counter.create(name, showText, parseInt(powerBonus, 10), parseInt(toughnessBonus, 10));
     }
     throw new Error("jsonデータからのCounterデータのパース失敗");
   }
