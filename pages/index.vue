@@ -18,7 +18,7 @@
         <countersSourceView/>
       </div>
     </div>
-    <div class="fixed left-0 bottom-0">
+    <div class="fixed flex flex-col left-0 bottom-0">
       <button class="gray-button" @click="UntapAll">全クリーチャーをアンタップ</button>
       <button class="gray-button" @click="destloyAllCreatures">全クリーチャーを破壊</button>
       <button class="gray-button" @click="initializeLife">ライフを初期化</button>
