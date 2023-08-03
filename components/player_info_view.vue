@@ -49,7 +49,7 @@
         this.life -= value;
       },
       getCounterText(counter: Counter, count: number): string {
-        return counter.showText + " x" + count.toString();
+        return counter.name + " x" + count.toString();
       },
       increseCounter(counter: Counter): void {
         this.counters.push(counter);
