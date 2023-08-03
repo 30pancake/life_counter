@@ -1,10 +1,15 @@
 <template>
-  <ul>
-    <li v-for="creature in creatureList" draggable="true"
-      @dragstart="creatureDragStartHandler($event, creature)">{{ creature.name + " " + creature.getPowerToughnessText() }}
-    </li>
-    <button class="gray-button" @click="showModal">追加</button>
-  </ul>
+  <table>
+    <tbody>
+      <tr v-for="creature in creatureList" draggable="true" @dragstart="creatureDragStartHandler($event, creature)">
+        <td>{{ creature.name + " " + creature.getPowerToughnessText() }}</td>
+        <td>
+          <button class="gray-button" @click="deleteCreature(creature)">削除</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="gray-button" @click="showModal">追加</button>
   <!-- モーダル -->
   <modalView :show="showingModal">
     <NewCreatureView @end="closeModal" @creatureCreated="appendCreature"/>
@@ -32,6 +37,12 @@
       },
       appendCreature(creature: Creature): void {
         this.creatureList.push(creature);
+      },
+      deleteCreature(creature: Creature): void {
+        const deleteIndex = this.creatureList.findIndex(x => x.equals(creature));
+        if (deleteIndex > -1 && confirm("選択したクリーチャーを削除します。よろしいですか？")) {
+          this.creatureList.splice(deleteIndex, 1);
+        }
       },
       showModal(): void {
         this.showingModal = true;
