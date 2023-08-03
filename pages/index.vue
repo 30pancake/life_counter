@@ -9,13 +9,17 @@
       </div>
     </div>
     <div class="flex flex-col flex-none w-40">
-      <div class="h-1/2">
+      <div class="h-1/3">
         <label>クリーチャーリスト</label>
         <creaturesSourceView/>
       </div>
-      <div class="h-1/2">
+      <div class="h-1/3">
         <label>カウンターリスト</label>
         <countersSourceView/>
+      </div>
+      <div class="h-1/3">
+        <label>クリーチャー一覧</label>
+        <creatureListView :creatureList="creatureList"/>
       </div>
     </div>
     <div class="fixed flex flex-col left-0 bottom-0">
