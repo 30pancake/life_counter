@@ -33,7 +33,7 @@
   import Counter from '@/components/classes/counter.ts';
   import WithStatusCreature from '@/components/classes/with_status_creature.ts';
   import Global from '@/components/classes/global.ts';
-  import CounterCount from '@/components/classes/counter_count.ts';
+  import DataCount from '@/components/classes/data_count.ts';
   import CreatureStatus from './classes/creature_status';
   
   export default {
@@ -185,14 +185,14 @@
         });
       },
 
-      editCounter(counterCounts: CounterCount[]): void {
+      editCounter(counterCounts: DataCount<Counter>[]): void {
         const unitCreatureWithStatus = this.getCreatureList[0];
         counterCounts.forEach(counterCount =>{
-          const unitCounterCount = unitCreatureWithStatus.status.counters.filter(x => x.equals(counterCount.counter)).length;
+          const unitCounterCount = unitCreatureWithStatus.status.counters.filter(x => x.equals(counterCount.data)).length;
           if (unitCounterCount < counterCount.count) {
-            this.increaseCounters(counterCount.counter, counterCount.count - unitCounterCount);
+            this.increaseCounters(counterCount.data, counterCount.count - unitCounterCount);
           } else if (unitCounterCount > counterCount.count) {
-            this.decreaseCounters(counterCount.counter, unitCounterCount - counterCount.count);
+            this.decreaseCounters(counterCount.data, unitCounterCount - counterCount.count);
           }
         });
       },

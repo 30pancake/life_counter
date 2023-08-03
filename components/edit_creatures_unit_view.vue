@@ -7,7 +7,7 @@
     <label>{{ withStatusCreature.ability }}</label>
     <div class="flex flex-row justify-evenly" v-for="counterCount in counterCountList">
       <button @click="decreseCounter(counterCount)" class="red-button">-</button>
-      <label>{{ counterCount.counter.name }}</label>
+      <label>{{ counterCount.data.name }}</label>
       <label>{{ "x" + counterCount.count.toString() }}</label>
       <button @click="increseCounter(counterCount)" class="blue-button">+</button>
     </div>
@@ -20,7 +20,7 @@
 
 <script lang="ts">
   import Counter from '@/components/classes/counter.ts';
-  import CounterCount from '@/components/classes/counter_count.ts';
+  import DataCount from '@/components/classes/data_count.ts';
   import WithStatusCreature from '@/components/classes/with_status_creature.ts';
 
   export default {
@@ -31,7 +31,7 @@
         },
     },
     data() {
-      const counterCountList: CounterCount[] = [];
+      const counterCountList: DataCount<Counter>[] = [];
       return {
         counterCountList,
       }
@@ -45,7 +45,7 @@
         const counters = this.withStatusCreature.status.counters;
         const counterHashSet = this.getCounterHashSet(counters);
         counterHashSet.forEach(c => {
-          this.counterCountList.push(new CounterCount(c, this.getCounterCount(counters, c)));
+          this.counterCountList.push(new DataCount(c, this.getCounterCount(counters, c)));
         });
       },
       getCounterHashSet(counters: Counter[]): Counter[] {
@@ -61,10 +61,10 @@
       getCounterCount(counters: Counter[], counter: Counter): number {
         return counters.filter(x => x.equals(counter)).length;
       },
-      increseCounter(counterCount: CounterCount): void {
+      increseCounter(counterCount: DataCount<Counter>): void {
         counterCount.count += 1;
       },
-      decreseCounter(counterCount: CounterCount): void {
+      decreseCounter(counterCount: DataCount<Counter>): void {
         if (counterCount.count > 0) {
           counterCount.count -= 1;
         }
