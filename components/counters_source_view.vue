@@ -1,10 +1,15 @@
 <template>
-  <ul>
-    <li v-for="counter in counterList" draggable="true"
-      @dragstart="counterDragStartHandler($event, counter)">{{ counter.name }}
-    </li>
-    <button class="gray-button" @click="showModal()">追加</button>
-  </ul>
+  <table>
+    <tbody>
+      <tr v-for="counter in counterList" draggable="true" @dragstart="counterDragStartHandler($event, counter)">
+        <td>{{ counter.name }}</td>
+        <td>
+          <button class="gray-button" @click="deleteCounter(counter)">削除</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="gray-button" @click="showModal">追加</button>
   <!-- モーダル -->
   <modalView :show="showingModal">
     <NewCounterView @end="closeModal" @counterCreated="appendCounter"/>
@@ -31,6 +36,12 @@
       },
       appendCounter(counter: Counter): void {
         this.counterList.push(counter);
+      },
+      deleteCounter(counter: Counter): void {
+        const deleteIndex = this.counterList.findIndex(x => x.equals(counter));
+        if (deleteIndex > -1 && confirm("選択したカウンターを削除します。よろしいですか？")) {
+          this.counterList.splice(deleteIndex, 1);
+        }
       },
       showModal(): void {
         this.showingModal = true;
