@@ -42,6 +42,12 @@
       life(newVal) {
         Global.setToCookie(this.lifeCookieKey(), newVal);
       },
+      counters: {
+        handler(newVal) {
+          Global.setToCookie(this.counterCookieKey(), newVal);
+        },
+        deep: true,
+      }
     },
     computed: {
       getGroupedCounters(): Map<Counter, number> {
@@ -53,6 +59,15 @@
         const temp = Global.getFromCookie(this.lifeCookieKey());
         if (typeof temp == 'number' && !isNaN(temp)) {
           this.life = temp;
+        }
+      }catch {
+        //
+      }
+      try {
+        const temp = Global.getFromCookie(this.counterCookieKey());
+        if (temp instanceof Array) {
+          this.counters = temp.filter(x => "name" in x && "powerBonus" in x && "toughnessBonus" in x)
+                              .map(x => Counter.create(x.name, x.powerBonus, x.toughnessBonus));
         }
       }catch {
         //
@@ -89,6 +104,13 @@
       lifeCookieKey(): string {
         if (!Global.isEmptyString(this.cookieKey)) {
           return this.cookieKey! + "_life";
+        } else {
+          throw Error();
+        }
+      },
+      counterCookieKey(): string {
+        if (!Global.isEmptyString(this.cookieKey)) {
+          return this.cookieKey! + "_counter";
         } else {
           throw Error();
         }
