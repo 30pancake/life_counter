@@ -24,7 +24,6 @@
   interface PlayerInfo {
     life: number,
     counters: Counter[],
-    setLifeToCookie: (key: string, life: number) => void,
   }
   export default {
     props: {
