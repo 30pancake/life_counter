@@ -76,4 +76,20 @@ export default class Global {
   static isEmptyString(str: string | null | undefined): boolean {
     return str === null || str === undefined || str === "";
   }
+
+  static getFromCookie(key: string): any {
+    if (!Global.isEmptyString(key)) {
+      return useCookie(key).value;
+    } else {
+      throw Error();
+    }
+  }
+
+  static setToCookie(key: string, value: any): void {
+    if (!Global.isEmptyString(key)) {
+      useCookie(key).value = value;
+    } else {
+      throw Error();
+    }
+  }
 }

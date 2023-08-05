@@ -41,7 +41,7 @@
     },
     watch: {
       life(newVal) {
-        this.setLifeToCookie(this.lifeCookie(), newVal);
+        Global.setToCookie(this.lifeCookieKey(), newVal);
       },
     },
     computed: {
@@ -51,7 +51,10 @@
     },
     mounted() {
       try {
-        this.life = this.getLifeFromCookie(this.lifeCookie());
+        const temp = Global.getFromCookie(this.lifeCookieKey());
+        if (typeof temp == 'number' && !isNaN(temp)) {
+          this.life = temp;
+        }
       }catch {
         //
       }
@@ -84,31 +87,13 @@
       },
 
       //クッキー関連
-      lifeCookie(): string {
+      lifeCookieKey(): string {
         if (!Global.isEmptyString(this.cookieKey)) {
-          return this.cookieKey! + "life";
+          return this.cookieKey! + "_life";
         } else {
           throw Error();
         }
       },
-      getLifeFromCookie(key: string): number {
-        if (!Global.isEmptyString(key)) {
-          const coockie = useCookie(key);
-          const lifeValue = parseInt(coockie.value);
-          if (typeof lifeValue === 'number' && !isNaN(lifeValue)) {
-            return lifeValue;
-          }
-        }
-        throw Error();
-      },
-      setLifeToCookie(key: string, life: number): void {
-        if (!Global.isEmptyString(key)) {
-          const coockie = useCookie(key);
-          coockie.value = life;
-        } else {
-          throw Error();
-        }
-      }
     },
   };
 </script>
