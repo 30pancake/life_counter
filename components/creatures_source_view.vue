@@ -20,15 +20,45 @@
   import Creature from '@/components/classes/creature.ts';
   import Global from '@/components/classes/global.ts';
 
+  interface CreatureSourceInfo {
+    creatureList: Creature[],
+    showingModal: boolean,
+  }
+
   export default {
-    data() {
+    props: {
+        cookieKey: {
+            type: String,
+            required: false,
+        },
+    },
+    data(): CreatureSourceInfo {
       return {
-        creatureList: [
-          Creature.create("人間", 1, 1, ""),
-          Creature.create("狼", 2, 2, ""),
-          Creature.create("鳥", 1, 1, "飛行"),
-        ],
+        creatureList: [],
         showingModal: false,
+      }
+    },
+    watch: {
+      creatureList: {
+        handler(newVal) {
+          try {
+            Global.setToCookie(this.cookieKey, newVal);
+          } catch {
+            //
+          }
+        },
+        deep: true,
+      },
+    },
+    mounted() {
+      try {
+        const temp = Global.getFromCookie(this.cookieKey);
+        if (temp instanceof Array) {
+          this.creatureList = temp.filter(x => "name" in x && "power" in x && "toughness" in x && "ability" in x)
+                                  .map(x => Creature.create(x.name, x.power, x.toughness, x.ability));
+        }
+      }catch {
+        //
       }
     },
     methods: {

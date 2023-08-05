@@ -40,14 +40,22 @@
     },
     watch: {
       life(newVal) {
-        Global.setToCookie(this.lifeCookieKey(), newVal);
+        try {
+          Global.setToCookie(this.lifeCookieKey(), newVal);
+        } catch {
+          //
+        }
       },
       counters: {
         handler(newVal) {
-          Global.setToCookie(this.counterCookieKey(), newVal);
+          try {
+            Global.setToCookie(this.counterCookieKey(), newVal);
+          } catch {
+            //
+          }
         },
         deep: true,
-      }
+      },
     },
     computed: {
       getGroupedCounters(): Map<Counter, number> {

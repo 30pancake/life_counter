@@ -20,14 +20,45 @@
   import Counter from '@/components/classes/counter.ts';
   import Global from '@/components/classes/global.ts';
 
+  interface CreatureSourceInfo {
+    counterList: Counter[],
+    showingModal: boolean,
+  }
+
   export default {
-    data() {
+    props: {
+        cookieKey: {
+            type: String,
+            required: false,
+        },
+    },
+    data(): CreatureSourceInfo {
       return {
-        counterList: [
-          Counter.create("+1", 1, 1),
-          Counter.create("毒", 0, 0),
-        ],
+        counterList: [],
         showingModal: false,
+      }
+    },
+    watch: {
+      counterList: {
+        handler(newVal) {
+          try {
+            Global.setToCookie(this.cookieKey, newVal);
+          } catch {
+            //
+          }
+        },
+        deep: true,
+      },
+    },
+    mounted() {
+      try {
+        const temp = Global.getFromCookie(this.cookieKey);
+        if (temp instanceof Array) {
+          this.counterList = temp.filter(x => "name" in x && "powerBonus" in x && "toughnessBonus" in x)
+                                  .map(x => Counter.create(x.name, x.powerBonus, x.toughnessBonus));
+        }
+      }catch {
+        //
       }
     },
     methods: {

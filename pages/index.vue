@@ -11,7 +11,7 @@
     <div class="flex flex-col flex-none w-40">
       <div class="h-1/3">
         <label>クリーチャーリスト</label>
-        <creaturesSourceView/>
+        <creaturesSourceView :cookie-key="cookieKey.CREATURE_SOURCE"/>
       </div>
       <div class="h-1/3">
         <label>カウンターリスト</label>
