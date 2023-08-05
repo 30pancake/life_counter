@@ -25,4 +25,30 @@ export default class CreatureStatus {
     this.toughnessBonus = source.toughnessBonus;
     this.counters = source.counters.map(c => c.clone());
   }
+
+  //static
+  static create(placeId: number, tap: boolean, counters: Counter[], powerBonus: number, toughnessBonus: number): CreatureStatus {
+    const status = new CreatureStatus();
+    status.placeId = placeId;
+    status.tap = tap;
+    status.counters = counters;
+    status.powerBonus = powerBonus;
+    status.toughnessBonus = toughnessBonus;
+    return status;
+  }
+
+  static canConvert(obj: any): boolean {
+    return "placeId" in obj && "tap" in obj && "counters" in obj && "powerBonus" in obj && "toughnessBonus" in obj &&
+           obj.counters instanceof Array &&
+           obj.counters.every(x => Counter.canConvert(x));
+  }
+
+  static convert(obj: any): CreatureStatus {
+    if (this.canConvert(obj) && obj.counters.every(x => Counter.canConvert(x))) {
+      const counters = obj.counters.map(x => Counter.convert(x));
+      return CreatureStatus.create(obj.placeId, obj.tap, counters, obj.powerBonus, obj.toughnessBonus);
+    } else {
+      throw new Error();
+    }
+  }
 }

@@ -55,4 +55,12 @@ export default class WithStatusCreature extends Creature {
     withStatusCreature.status = status.clone();
     return withStatusCreature;
   }
+
+  static canConvert(obj: any): boolean {
+    return Creature.canConvert(obj) && "status" in obj && CreatureStatus.canConvert(obj.status);
+  }
+
+  static convert(obj: any): WithStatusCreature {
+    return this.create(Creature.convert(obj), CreatureStatus.convert(obj.status));
+  }
 }

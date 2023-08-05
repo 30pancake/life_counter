@@ -59,4 +59,16 @@ export default class Creature implements Equals {
       }
     throw new Error("jsonデータからのCreatureデータのパース失敗");
   }
+
+  static canConvert(obj: any): boolean {
+    return "name" in obj && "power" in obj && "toughness" in obj && "ability" in obj;
+  }
+
+  static convert(obj: any): Creature {
+    if (this.canConvert(obj)) {
+      return Creature.create(obj.name, obj.power, obj.toughness, obj.ability);
+    } else {
+      throw new Error();
+    }
+  }
 }

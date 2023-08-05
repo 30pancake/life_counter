@@ -51,4 +51,16 @@ export default class Counter implements Equals {
     }
     throw new Error("jsonデータからのCounterデータのパース失敗");
   }
+
+  static canConvert(obj: any) : boolean {
+    return "name" in obj && "powerBonus" in obj && "toughnessBonus" in obj;
+  }
+
+  static convert(obj: any): Counter {
+    if (this.canConvert(obj)) {
+      return Counter.create(obj.name, obj.powerBonus, obj.toughnessBonus);
+    } else {
+      throw new Error();
+    }
+  }
 }

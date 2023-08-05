@@ -74,8 +74,8 @@
       try {
         const temp = Global.getFromCookie(this.counterCookieKey());
         if (temp instanceof Array) {
-          this.counters = temp.filter(x => "name" in x && "powerBonus" in x && "toughnessBonus" in x)
-                              .map(x => Counter.create(x.name, x.powerBonus, x.toughnessBonus));
+          this.counters = temp.filter(x => Counter.canConvert(x))
+                              .map(x => Counter.convert(x));
         }
       }catch {
         //

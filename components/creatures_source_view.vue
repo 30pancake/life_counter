@@ -54,8 +54,8 @@
       try {
         const temp = Global.getFromCookie(this.cookieKey);
         if (temp instanceof Array) {
-          this.creatureList = temp.filter(x => "name" in x && "power" in x && "toughness" in x && "ability" in x)
-                                  .map(x => Creature.create(x.name, x.power, x.toughness, x.ability));
+          this.creatureList = temp.filter(x => Creature.canConvert(x))
+                                  .map(x => Creature.convert(x));
         }
       }catch {
         //
