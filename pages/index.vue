@@ -5,7 +5,7 @@
         <creaturesUnitListView :creatureList="creatureList" />
       </div>
       <div class="mt-auto my-2">
-        <playerInfoView ref="own_life_counter"/>
+        <playerInfoView ref="own_life_counter" :cookie-key="cookieKey.LIFE"/>
       </div>
     </div>
     <div class="flex flex-col flex-none w-40">
@@ -32,16 +32,19 @@
 
 <script lang="ts">
   import WithStatusCreature from '@/components/classes/with_status_creature.ts';
+  import CookieKey from '@/components/classes/cookie_key.ts';
 
   interface LifeCounterInfo {
     initialLifeValue: number
     creatureList: WithStatusCreature[],
+    cookieKey: CookieKey,
   }
   export default {
     data(): LifeCounterInfo {
       return {
         initialLifeValue: 20,
         creatureList: [],
+        cookieKey: new CookieKey(),
       };
     },
     methods: {
@@ -58,9 +61,6 @@
           c.status.tap = false;
         });
       },
-    },
-    mounted() {
-      this.initializeLife();
     },
   }
 </script>

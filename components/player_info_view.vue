@@ -26,6 +26,12 @@
     counters: Counter[],
   }
   export default {
+    props: {
+        cookieKey: {
+            type: String,
+            required: false,
+        },
+    },
     data(): PlayerInfo {
       return {
         life: 20,
@@ -37,16 +43,25 @@
         return Global.countGroup(this.counters);
       },
     },
-
+    mounted() {
+      try {
+        this.life = this.getLifeFromCookie(this.lifeCookie());
+      }catch {
+        //
+      }
+    },
     methods: {
       setLife(value:number): void {
-        this.life = value
+        this.life = value;
+        this.setLifeToCookie(this.lifeCookie(), this.life);
       },
       increaseLife(value:number): void {
         this.life += value;
+        this.setLifeToCookie(this.lifeCookie(), this.life);
       },
       decreaseLife(value:number): void {
         this.life -= value;
+        this.setLifeToCookie(this.lifeCookie(), this.life);
       },
       getCounterText(counter: Counter, count: number): string {
         return counter.name + " x" + count.toString();
@@ -64,6 +79,35 @@
         let counter = Global.getObjectDataFromDragEvent(event, Counter.parseJson);
         this.counters.push(counter);
       },
+
+      //クッキー関連
+      lifeCookie(): string {
+        if (!Global.isEmptyString(this.cookieKey)) {
+          return this.cookieKey! + "life";
+        } else {
+          throw Error();
+        }
+      },
+      getLifeFromCookie(key: string): number {
+        if (!Global.isEmptyString(key)) {
+          const coockie = useCookie(key);
+          const lifeValue = parseInt(coockie.value);
+          if (typeof lifeValue === 'number' && !isNaN(lifeValue)) {
+            return lifeValue;
+          }
+        }
+        throw Error();
+      },
+      setLifeToCookie(key: string, life: number): void {
+        console.log(key);
+        if (!Global.isEmptyString(key)) {
+          const coockie = useCookie(key);
+          console.log(coockie);
+          coockie.value = life;
+        } else {
+          throw Error();
+        }
+      }
     },
   };
 </script>

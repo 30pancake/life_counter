@@ -72,4 +72,8 @@ export default class Global {
     });
     return groupedMap;
   }
+
+  static isEmptyString(str: string | null | undefined): boolean {
+    return str === null || str === undefined || str === "";
+  }
 }
