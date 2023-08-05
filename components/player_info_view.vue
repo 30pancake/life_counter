@@ -24,6 +24,7 @@
   interface PlayerInfo {
     life: number,
     counters: Counter[],
+    setLifeToCookie: (key: string, life: number) => void,
   }
   export default {
     props: {
@@ -37,6 +38,11 @@
         life: 20,
         counters: [],
       };
+    },
+    watch: {
+      life(newVal) {
+        this.setLifeToCookie(this.lifeCookie(), newVal);
+      },
     },
     computed: {
       getGroupedCounters(): Map<Counter, number> {
@@ -53,15 +59,12 @@
     methods: {
       setLife(value:number): void {
         this.life = value;
-        this.setLifeToCookie(this.lifeCookie(), this.life);
       },
       increaseLife(value:number): void {
         this.life += value;
-        this.setLifeToCookie(this.lifeCookie(), this.life);
       },
       decreaseLife(value:number): void {
         this.life -= value;
-        this.setLifeToCookie(this.lifeCookie(), this.life);
       },
       getCounterText(counter: Counter, count: number): string {
         return counter.name + " x" + count.toString();
@@ -99,10 +102,8 @@
         throw Error();
       },
       setLifeToCookie(key: string, life: number): void {
-        console.log(key);
         if (!Global.isEmptyString(key)) {
           const coockie = useCookie(key);
-          console.log(coockie);
           coockie.value = life;
         } else {
           throw Error();
