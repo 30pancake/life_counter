@@ -9,13 +9,19 @@
       </div>
     </div>
     <div class="flex flex-col flex-none w-40">
-      <div class="h-1/3">
-        <label>クリーチャーリスト</label>
-        <creaturesSourceView :cookie-key="cookieKey.CREATURE_SOURCE"/>
+      <button class="gray-button" @click="hideSource = !hideSource">表示切り替え</button>
+      <div class="flex-grow" v-if="!hideSource">
+        <div class="h-1/2">
+          <label>クリーチャーリスト</label>
+          <creaturesSourceView :cookie-key="cookieKey.CREATURE_SOURCE"/>
+        </div>
+        <div class="h-1/2">
+          <label>カウンターリスト</label>
+          <countersSourceView :cookie-key="cookieKey.COUNTER_SOURCE"/>
+        </div>
       </div>
-      <div class="h-1/3">
-        <label>カウンターリスト</label>
-        <countersSourceView :cookie-key="cookieKey.COUNTER_SOURCE"/>
+      <div class="flex-grow" v-if="hideSource">
+        <label>非表示中</label>
       </div>
       <div class="h-1/3">
         <label>クリーチャー一覧</label>
@@ -39,6 +45,7 @@
     initialLifeValue: number
     creatureList: WithStatusCreature[],
     cookieKey: CookieKey,
+    hideSource: boolean,
   }
   export default {
     data(): LifeCounterInfo {
@@ -46,6 +53,7 @@
         initialLifeValue: 20,
         creatureList: [],
         cookieKey: new CookieKey(),
+        hideSource: false,
       };
     },
     watch: {
