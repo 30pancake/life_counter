@@ -11,11 +11,11 @@
     <div class="flex flex-col flex-none w-40">
       <button class="gray-button" @click="hideSource = !hideSource">表示切り替え</button>
       <div class="flex-grow" v-if="!hideSource">
-        <div class="h-1/2">
+        <div class="h-1/2 overflow-auto border rounded">
           <label>クリーチャーリスト</label>
           <creaturesSourceView :cookie-key="cookieKey.CREATURE_SOURCE"/>
         </div>
-        <div class="h-1/2">
+        <div class="h-1/2 overflow-auto border rounded">
           <label>カウンターリスト</label>
           <countersSourceView :cookie-key="cookieKey.COUNTER_SOURCE"/>
         </div>
@@ -23,7 +23,7 @@
       <div class="flex-grow" v-if="hideSource">
         <label>非表示中</label>
       </div>
-      <div class="h-1/3">
+      <div class="h-1/3 border rounded">
         <label>クリーチャー一覧</label>
         <creatureListView :creatureList="creatureList"/>
       </div>
