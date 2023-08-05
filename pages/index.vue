@@ -15,7 +15,7 @@
       </div>
       <div class="h-1/3">
         <label>カウンターリスト</label>
-        <countersSourceView/>
+        <countersSourceView :cookie-key="cookieKey.COUNTER_SOURCE"/>
       </div>
       <div class="h-1/3">
         <label>クリーチャー一覧</label>
