@@ -26,21 +26,64 @@
     counters: Counter[],
   }
   export default {
+    props: {
+        cookieKey: {
+            type: String,
+            required: false,
+        },
+    },
     data(): PlayerInfo {
       return {
         life: 20,
         counters: [],
       };
     },
+    watch: {
+      life(newVal) {
+        try {
+          Global.setToCookie(this.lifeCookieKey(), newVal);
+        } catch {
+          //
+        }
+      },
+      counters: {
+        handler(newVal) {
+          try {
+            Global.setToCookie(this.counterCookieKey(), newVal);
+          } catch {
+            //
+          }
+        },
+        deep: true,
+      },
+    },
     computed: {
       getGroupedCounters(): Map<Counter, number> {
         return Global.countGroup(this.counters);
       },
     },
-
+    mounted() {
+      try {
+        const temp = Global.getFromCookie(this.lifeCookieKey());
+        if (typeof temp == 'number' && !isNaN(temp)) {
+          this.life = temp;
+        }
+      }catch {
+        //
+      }
+      try {
+        const temp = Global.getFromCookie(this.counterCookieKey());
+        if (temp instanceof Array) {
+          this.counters = temp.filter(x => Counter.canConvert(x))
+                              .map(x => Counter.convert(x));
+        }
+      }catch {
+        //
+      }
+    },
     methods: {
       setLife(value:number): void {
-        this.life = value
+        this.life = value;
       },
       increaseLife(value:number): void {
         this.life += value;
@@ -49,7 +92,7 @@
         this.life -= value;
       },
       getCounterText(counter: Counter, count: number): string {
-        return counter.showText + " x" + count.toString();
+        return counter.name + " x" + count.toString();
       },
       increseCounter(counter: Counter): void {
         this.counters.push(counter);
@@ -63,6 +106,22 @@
       dropHandler(event: DragEvent): void {
         let counter = Global.getObjectDataFromDragEvent(event, Counter.parseJson);
         this.counters.push(counter);
+      },
+
+      //クッキー関連
+      lifeCookieKey(): string {
+        if (!Global.isEmptyString(this.cookieKey)) {
+          return this.cookieKey! + "_life";
+        } else {
+          throw Error();
+        }
+      },
+      counterCookieKey(): string {
+        if (!Global.isEmptyString(this.cookieKey)) {
+          return this.cookieKey! + "_counter";
+        } else {
+          throw Error();
+        }
       },
     },
   };

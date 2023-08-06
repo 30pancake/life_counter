@@ -1,23 +1,64 @@
 <template>
-  <ul>
-    <li v-for="counter in counterList" draggable="true"
-      @dragstart="counterDragStartHandler($event, counter)">{{ counter.name }}
-    </li>
-    <button class="gray-button" @click="handleAppendButtonClick()">追加</button>
-  </ul>
+  <table>
+    <tbody>
+      <tr v-for="counter in counterList" draggable="true" @dragstart="counterDragStartHandler($event, counter)">
+        <td>{{ counter.name }}</td>
+        <td>
+          <button class="gray-button" @click="deleteCounter(counter)">削除</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <button class="gray-button" @click="showModal">追加</button>
+  <!-- モーダル -->
+  <modalView :show="showingModal">
+    <NewCounterView @end="closeModal" @counterCreated="appendCounter"/>
+  </modalView>
 </template>
 
 <script lang="ts">
   import Counter from '@/components/classes/counter.ts';
   import Global from '@/components/classes/global.ts';
 
+  interface CreatureSourceInfo {
+    counterList: Counter[],
+    showingModal: boolean,
+  }
+
   export default {
-    data() {
+    props: {
+        cookieKey: {
+            type: String,
+            required: false,
+        },
+    },
+    data(): CreatureSourceInfo {
       return {
-        counterList: [
-          Counter.create('+1/+1', "+1", 1, 1),
-          Counter.create('毒カウンター', "毒", 0, 0),
-        ]
+        counterList: [],
+        showingModal: false,
+      }
+    },
+    watch: {
+      counterList: {
+        handler(newVal) {
+          try {
+            Global.setToCookie(this.cookieKey, newVal);
+          } catch {
+            //
+          }
+        },
+        deep: true,
+      },
+    },
+    mounted() {
+      try {
+        const temp = Global.getFromCookie(this.cookieKey);
+        if (temp instanceof Array) {
+          this.counterList = temp.filter(x => Counter.canConvert(x))
+                                  .map(x => Counter.convert(x));
+        }
+      }catch {
+        //
       }
     },
     methods: {
@@ -27,8 +68,17 @@
       appendCounter(counter: Counter): void {
         this.counterList.push(counter);
       },
-      handleAppendButtonClick(): void {
-        this.$emit('appendCounterRequired');
+      deleteCounter(counter: Counter): void {
+        const deleteIndex = this.counterList.findIndex(x => x.equals(counter));
+        if (deleteIndex > -1 && confirm("選択したカウンターを削除します。よろしいですか？")) {
+          this.counterList.splice(deleteIndex, 1);
+        }
+      },
+      showModal(): void {
+        this.showingModal = true;
+      },
+      closeModal(): void {
+        this.showingModal = false;
       },
     },
   }

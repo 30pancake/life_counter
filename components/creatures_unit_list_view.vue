@@ -8,8 +8,8 @@
         <label class="text-7xl text-gray-500">+</label>
       </div>
     </div>
-    <div class="m-2" v-for="placeId in getPlaceIdList">
-      <CreaturesUnitView class="w-36 h-48 border rounded" :id=placeId :creatureList="creatureList" />
+    <div class="m-2 border rounded" v-for="placeId in getPlaceIdList">
+      <CreaturesUnitView class="w-36 h-48" :id=placeId :creatureList="creatureList" />
     </div>
   </div>
 </template>

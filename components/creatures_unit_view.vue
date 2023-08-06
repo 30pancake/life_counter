@@ -9,7 +9,7 @@
       <label>{{ getCreatureName }}</label>
       <label>{{ powerToughnessText }}</label>
     </div>
-    <div class="flex justify-center">
+    <div class="flex justify-center" @dblclick="showModal">
       <label>{{ getCounterText }}</label>
     </div>
     <div class="flex flex-row justify-around">
@@ -23,12 +23,18 @@
       <button class="blue-button" @click="allTap()">All</button>
     </div>
   </div>
+  <!-- モーダル -->
+  <modalView :show="showingModal">
+    <EditCreaturesUnitView :withStatusCreature="getCreatureList[0]" @end="closeModal" @counterCountsEdited="editCounter"/>
+  </modalView>
 </template>
 
 <script lang="ts">
   import Counter from '@/components/classes/counter.ts';
   import WithStatusCreature from '@/components/classes/with_status_creature.ts';
   import Global from '@/components/classes/global.ts';
+  import DataCount from '@/components/classes/data_count.ts';
+  import CreatureStatus from './classes/creature_status';
   
   export default {
     props: {
@@ -40,6 +46,12 @@
         type: Array<WithStatusCreature>,
         required: true, 
       },
+    },
+
+    data() {
+      return {
+        showingModal: false,
+      }
     },
 
     computed: {
@@ -76,10 +88,10 @@
         let creatures = this.getCreatureList;
         if (creatures.length > 0) {
           let counters = creatures[0].status.counters;
-          let counterShowTextSet = new Set(counters.map(x => x.showText));
+          let counterShowTextSet = new Set(counters.map(x => x.name));
           let showTextAndCountList: { [key: string]: number; } = {};
           counterShowTextSet.forEach(showText => {
-            let count = counters.filter(x => x.showText == showText).length;
+            let count = counters.filter(x => x.name == showText).length;
             showTextAndCountList[showText] = count;
           });
           return Object.entries(showTextAndCountList).map(([key, value]) => value == 1 ? `${key}` : `${key}x${value.toString()}`)
@@ -171,7 +183,50 @@
         creatures.forEach(creature => {
           creature.status.placeId = setId
         });
-      }
+      },
+
+      editCounter(counterCounts: DataCount<Counter>[]): void {
+        const unitCreatureWithStatus = this.getCreatureList[0];
+        counterCounts.forEach(counterCount =>{
+          const unitCounterCount = unitCreatureWithStatus.status.counters.filter(x => x.equals(counterCount.data)).length;
+          if (unitCounterCount < counterCount.count) {
+            this.increaseCounters(counterCount.data, counterCount.count - unitCounterCount);
+          } else if (unitCounterCount > counterCount.count) {
+            this.decreaseCounters(counterCount.data, unitCounterCount - counterCount.count);
+          }
+        });
+      },
+
+      increaseCounters(counter: Counter, increaseCount: number): void 
+      {
+        this.getCreatureList.forEach(creasureWithStatus => {
+          const pushCounters = Array(increaseCount).fill(counter);
+          creasureWithStatus.status.counters.push(...pushCounters);
+        });
+      },
+
+      decreaseCounters(counter: Counter, decreaseCount: number): void 
+      {
+        this.getCreatureList.forEach(creasureWithStatus => {
+          const matchIndexes = this.getIndexes(creasureWithStatus.status, counter);
+          matchIndexes.sort((a, b) => b - a);//降順でソート
+          matchIndexes.slice(0, decreaseCount).forEach(index => {
+            creasureWithStatus.status.counters.splice(index, 1);
+          });
+        });
+      },
+
+      getIndexes(creatureStatus: CreatureStatus, searchCounter: Counter): number[] {
+        return creatureStatus.counters.map((element, index) => searchCounter.equals(element) ? index : -1).filter((index) => index > -1);
+      },
+
+      showModal(): void {
+        this.showingModal = true;
+      },
+
+      closeModal(): void {
+        this.showingModal = false;
+      },
     },
   }
 </script>

@@ -6,10 +6,6 @@
         <input class="w-1/2" type="text" v-model="counter.name" />
       </div>
       <div class="flex flex-row justify-center">
-        <label class="w-1/2 text-right">略称：</label>
-        <input class="w-1/2" type="text" v-model="counter.showText" />
-      </div>
-      <div class="flex flex-row justify-center">
         <label class="w-1/2 text-right">パワー修正値：</label>
         <div class="w-1/2">
           <input class="w-10" type="text" v-model="counter.powerBonus" />
@@ -37,7 +33,7 @@
   export default {
     data() {
       return {
-        counter: Counter.create("", "", 0, 0),
+        counter: Counter.create("", 0, 0),
       }
     },
     methods: {

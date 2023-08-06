@@ -1,7 +1,6 @@
 export default class Counter implements Equals {
   //property
   name: string = "";
-  showText: string = "";
   powerBonus: number = 0;
   toughnessBonus: number = 0;
 
@@ -17,7 +16,6 @@ export default class Counter implements Equals {
 
   copy(source: Counter): void {
     this.name = source.name;
-    this.showText = source.showText;
     this.powerBonus = source.powerBonus;
     this.toughnessBonus = source.toughnessBonus;
   }
@@ -25,7 +23,6 @@ export default class Counter implements Equals {
   equals(obj: object): boolean {
     if (obj instanceof Counter) {
       return this.name == obj.name &&
-      this.showText == obj.showText &&
       this.powerBonus == obj.powerBonus &&
       this.toughnessBonus == obj.toughnessBonus;
     } else {
@@ -34,10 +31,9 @@ export default class Counter implements Equals {
   }
 
   //static method
-  static create(name: string, showText: string, powerBonus: number, toughnessBonus: number): Counter {
+  static create(name: string, powerBonus: number, toughnessBonus: number): Counter {
     let counter = new Counter();
     counter.name = name;
-    counter.showText = showText;
     counter.powerBonus = powerBonus;
     counter.toughnessBonus = toughnessBonus;
     return counter;
@@ -46,12 +42,25 @@ export default class Counter implements Equals {
   static parseJson(jsonText: string): Counter {
     let counterData = JSON.parse(jsonText);
     if (typeof counterData === 'object' && counterData !== null) {
-      const {name, showText, powerBonus, toughnessBonus} = counterData;
-      if (typeof name === 'string' && typeof showText === 'string' && 
-          typeof powerBonus === 'number' && typeof toughnessBonus === 'number' ) {
-            return Counter.create(name, showText, powerBonus, toughnessBonus);
+      const {name, powerBonus, toughnessBonus} = counterData;
+      const powerBonusValue = parseInt(powerBonus, 10);
+      const toughnessBonusValue = parseInt(toughnessBonus, 10);
+      if (!isNaN(powerBonusValue) && !isNaN(toughnessBonusValue)) {
+        return Counter.create(name, parseInt(powerBonus, 10), parseInt(toughnessBonus, 10));
       }
     }
     throw new Error("jsonデータからのCounterデータのパース失敗");
+  }
+
+  static canConvert(obj: any) : boolean {
+    return "name" in obj && "powerBonus" in obj && "toughnessBonus" in obj;
+  }
+
+  static convert(obj: any): Counter {
+    if (this.canConvert(obj)) {
+      return Counter.create(obj.name, obj.powerBonus, obj.toughnessBonus);
+    } else {
+      throw new Error();
+    }
   }
 }

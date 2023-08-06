@@ -51,11 +51,24 @@ export default class Creature implements Equals {
     let creatureData = JSON.parse(jsonText);
     if (typeof creatureData === "object" && creatureData !== null) {
         const { name, power, toughness, ability } = creatureData;
-        if (typeof name === "string" && typeof power === "number" &&
-            typeof toughness === "number" && typeof ability === "string") {
-            return Creature.create(name, power, toughness, ability);
+        const powerValue = parseInt(power, 10);
+        const toughnessValue = parseInt(toughness, 10);
+        if (!isNaN(powerValue) && !isNaN(toughnessValue)) {
+          return Creature.create(name, parseInt(power, 10), parseInt(toughness, 10), ability);
         }
-    }
+      }
     throw new Error("jsonデータからのCreatureデータのパース失敗");
+  }
+
+  static canConvert(obj: any): boolean {
+    return "name" in obj && "power" in obj && "toughness" in obj && "ability" in obj;
+  }
+
+  static convert(obj: any): Creature {
+    if (this.canConvert(obj)) {
+      return Creature.create(obj.name, obj.power, obj.toughness, obj.ability);
+    } else {
+      throw new Error();
+    }
   }
 }
