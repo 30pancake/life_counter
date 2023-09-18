@@ -9,7 +9,7 @@
       </tr>
     </tbody>
   </table>
-  <button class="gray-button" @click="showModal">追加</button>
+  <button class="gray-button" @click="showModal">作成</button>
   <!-- モーダル -->
   <modalView :show="showingModal">
     <NewCounterView @end="closeModal" @counterCreated="appendCounter"/>
