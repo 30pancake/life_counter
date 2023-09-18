@@ -1,13 +1,5 @@
 <template>
   <div class="flex flex-row flex-wrap">
-    <div class="m-2 w-36 h-48 border rounded" @drop="dropHandler($event)" @dragover.prevent>
-      <div class="flex justify-center">
-        <label>クリーチャーを追加</label>
-      </div>
-      <div class="flex justify-center">
-        <label class="text-7xl text-gray-500">+</label>
-      </div>
-    </div>
     <div class="m-2 border rounded" v-for="placeId in getPlaceIdList">
       <CreaturesUnitView class="w-36 h-48" :id=placeId :creatureList="creatureList" />
     </div>
@@ -16,7 +8,6 @@
 
 <script lang="ts">
   import Creature from '@/components/classes/creature.ts';
-  import CreatureStatus from '@/components/classes/creature_status.ts';
   import WithStatusCreature from '@/components/classes/with_status_creature.ts';
   import Global from '@/components/classes/global.ts';
 
@@ -49,32 +40,9 @@
         },
         pushCreatureByDragEvent(event: DragEvent): void {
             let creature = Global.getObjectDataFromDragEvent<Creature>(event, Creature.parseJson);
-            let plateId = this.getRegisterPlaceId(this.creatureList, creature);
-            let registerCreature = this.makeRegisterCreature(creature, plateId);
+            let plateId = Global.getRegisterPlaceId(this.creatureList, creature);
+            let registerCreature = Global.makeRegisterCreature(creature, plateId);
             this.creatureList.push(registerCreature);
-        },
-        makeStatus(id: number): CreatureStatus {
-            let status = new CreatureStatus();
-            status.placeId = id;
-            return status;
-        },
-        makeRegisterCreature(creature: Creature, placeId: number): WithStatusCreature {
-            let status = this.makeStatus(placeId);
-            return WithStatusCreature.create(creature, status);
-        },
-        getRegisterPlaceId(creatures: WithStatusCreature[], makeCreature: Creature): number {
-          if (creatures.length == 0) {
-            return 1;
-          } else {
-            let candidate = creatures.filter(x => x.status.counters.length == 0)
-              .find(x => makeCreature.equals(x));
-            if (candidate != undefined) {
-                return candidate.status.placeId;
-            }
-            else {
-                return Math.max(...creatures.map(x => x.status.placeId)) + 1;
-            }
-          }
         },
         assignNewIdToCreature(event: DragEvent): void {
           let newId = Math.max(...this.creatureList.map(x => x.status.placeId)) + 1;

@@ -49,7 +49,8 @@
         this.$emit('end');
       },
       getCreature(): Creature {
-        return this.creature;
+        //this.creatureをそのまま返すと、パワーとタフネスがstringになっている場合があるので作成しなおす
+        return Creature.create(this.creature.name, Number(this.creature.power), Number(this.creature.toughness), this.creature.ability);
       }
     }
   }

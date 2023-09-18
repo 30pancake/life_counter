@@ -8,12 +8,12 @@
         <playerInfoView ref="own_life_counter" :cookie-key="cookieKey.LIFE"/>
       </div>
     </div>
-    <div class="flex flex-col flex-none w-40">
+    <div class="flex flex-col flex-none">
       <button class="gray-button" @click="hideSource = !hideSource">表示切り替え</button>
       <div class="flex-grow" v-if="!hideSource">
         <div class="h-1/2 overflow-auto border rounded">
           <label>クリーチャーリスト</label>
-          <creaturesSourceView :cookie-key="cookieKey.CREATURE_SOURCE"/>
+          <creaturesSourceView :cookie-key="cookieKey.CREATURE_SOURCE" @makeCreatureRequired="appendCreatureToCreaturesUnitList"/>
         </div>
         <div class="h-1/2 overflow-auto border rounded">
           <label>カウンターリスト</label>
@@ -29,7 +29,7 @@
       </div>
     </div>
     <div class="fixed flex flex-col left-0 bottom-0">
-      <button class="gray-button" @click="UntapAll">全クリーチャーをアンタップ</button>
+      <button class="gray-button" @click="untapAll">全クリーチャーをアンタップ</button>
       <button class="gray-button" @click="destloyAllCreatures">全クリーチャーを破壊</button>
       <button class="gray-button" @click="initializeLife">ライフを初期化</button>
     </div>
@@ -40,6 +40,7 @@
   import WithStatusCreature from '@/components/classes/with_status_creature.ts';
   import CookieKey from '@/components/classes/cookie_key.ts';
   import Global from '@/components/classes/global.ts';
+  import Creature from '@/components/classes/creature.ts';
 
   interface LifeCounterInfo {
     initialLifeValue: number
@@ -88,10 +89,15 @@
           this.creatureList.splice(0);
         }
       },
-      UntapAll(): void {
+      untapAll(): void {
         this.creatureList.forEach(c => {
           c.status.tap = false;
         });
+      },
+      appendCreatureToCreaturesUnitList(creature: Creature): void {
+        let plateId = Global.getRegisterPlaceId(this.creatureList, creature);
+        let registerCreature = Global.makeRegisterCreature(creature, plateId);
+        this.creatureList.push(registerCreature);
       },
     },
   }

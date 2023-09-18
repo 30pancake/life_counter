@@ -4,6 +4,9 @@
       <tr v-for="creature in creatureList" draggable="true" @dragstart="creatureDragStartHandler($event, creature)">
         <td>{{ creature.name + " " + creature.getPowerToughnessText() }}</td>
         <td>
+          <button class="gray-button" @click="requireMakeCreature(creature)">追加</button>
+        </td>
+        <td>
           <button class="gray-button" @click="deleteCreature(creature)">削除</button>
         </td>
       </tr>
@@ -64,6 +67,9 @@
     methods: {
       creatureDragStartHandler(event: DragEvent, creature: Creature) {
         Global.setObjectDataToDragEvent(event, creature);
+      },
+      requireMakeCreature(creature: Creature): void {
+        this.$emit('makeCreatureRequired', creature);
       },
       appendCreature(creature: Creature): void {
         this.creatureList.push(creature);
