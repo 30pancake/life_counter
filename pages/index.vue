@@ -96,7 +96,7 @@
         });
       },
       appendCreatureToCreaturesUnitList(creature: Creature): void {
-        let plateId = Global.getRegisterPlaceId(this.creatureList, creature);
+        const plateId = this.creatureList.length == 0 ? 1 : Math.max(...this.creatureList.map(x => x.status.placeId)) + 1
         let registerCreature = Global.makeRegisterCreature(creature, plateId);
         this.creatureList.push(registerCreature);
       },
