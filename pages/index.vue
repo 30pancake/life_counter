@@ -2,7 +2,7 @@
   <div class="h-screen flex">
     <div class="flex flex-col flex-grow">
       <div>
-        <creaturesUnitListView :creatureList="creatureList" />
+        <creaturesUnitListView :creatureList="creatureList" :allCounterList="getCounterListSource"/>
       </div>
       <div class="mt-auto my-2">
         <playerInfoView ref="own_life_counter" :cookie-key="cookieKey.LIFE"/>
@@ -17,7 +17,7 @@
         </div>
         <div class="h-1/2 overflow-auto border rounded">
           <label>カウンターリスト</label>
-          <countersSourceView :cookie-key="cookieKey.COUNTER_SOURCE"/>
+          <countersSourceView ref="counter_source_list" :cookie-key="cookieKey.COUNTER_SOURCE"/>
         </div>
       </div>
       <div class="flex-grow" v-if="hideSource">
@@ -41,6 +41,7 @@
   import CookieKey from '@/components/classes/cookie_key.ts';
   import Global from '@/components/classes/global.ts';
   import Creature from '@/components/classes/creature.ts';
+  import Counter from '@/components/classes/counter.ts';
 
   interface LifeCounterInfo {
     initialLifeValue: number
@@ -98,6 +99,9 @@
         let plateId = Global.getRegisterPlaceId(this.creatureList, creature);
         let registerCreature = Global.makeRegisterCreature(creature, plateId);
         this.creatureList.push(registerCreature);
+      },
+      getCounterListSource(): Counter[] {
+        return this.$refs.counter_source_list.getCounterList()
       },
     },
   }

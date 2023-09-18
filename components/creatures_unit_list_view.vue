@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-row flex-wrap">
     <div class="m-2 border rounded" v-for="placeId in getPlaceIdList">
-      <CreaturesUnitView class="w-36 h-48" :id=placeId :creatureList="creatureList" />
+      <CreaturesUnitView class="w-36 h-48" :id=placeId :creatureList="creatureList" :allCounterList="allCounterList"/>
     </div>
   </div>
 </template>
@@ -10,12 +10,17 @@
   import Creature from '@/components/classes/creature.ts';
   import WithStatusCreature from '@/components/classes/with_status_creature.ts';
   import Global from '@/components/classes/global.ts';
+  import Counter from '@/components/classes/counter.ts';
 
   export default {
     props: {
         creatureList: {
-            type: Array<WithStatusCreature>,
-            required: true,
+          type: Array<WithStatusCreature>,
+          required: true,
+        },
+        allCounterList: {
+          type: Array<Counter>,
+          required: false,
         },
     },
     computed: {

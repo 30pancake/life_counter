@@ -80,6 +80,9 @@
       closeModal(): void {
         this.showingModal = false;
       },
+      getCounterList(): Counter[] {
+        return this.counterList
+      },
     },
   }
 </script>

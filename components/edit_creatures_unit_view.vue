@@ -29,6 +29,10 @@
             type: WithStatusCreature,
             required: true,
         },
+        allCounterList: {
+          type: Array<Counter>,
+          required: false,
+        },
     },
     data() {
       const counterCountList: DataCount<Counter>[] = [];
@@ -43,7 +47,7 @@
       initCreatureCounts(): void {
         this.counterCountList.splice(0);
         const counters = this.withStatusCreature.status.counters;
-        const counterHashSet = this.getCounterHashSet(counters);
+        const counterHashSet = this.getCounterHashSet(this.allCounterList != undefined ? this.allCounterList() : counters);
         counterHashSet.forEach(c => {
           this.counterCountList.push(new DataCount(c, this.getCounterCount(counters, c)));
         });
