@@ -1,13 +1,31 @@
 <template>
   <div class="h-screen flex">
+    <!-- メインフィールド -->
     <div class="flex flex-col flex-grow">
-      <div>
-        <creaturesUnitListView :creatureList="creatureList" :allCounterList="getCounterListSource"/>
+      <!-- フィールド -->
+      <div class="flex flex-col flex-grow">
+        <div>
+          <creaturesUnitListView :creatureList="creatureList" :allCounterList="getCounterListSource"/>
+        </div>
       </div>
-      <div class="mt-auto my-2">
-        <playerInfoView ref="own_life_counter" :cookie-key="cookieKey.LIFE"/>
+      <!-- 底 -->
+      <div class="flex flex-row">
+        <!-- 各ボタン -->
+        <div class="flex flex-col">
+          <button class="gray-button">クリーチャーをソート</button>
+          <button class="gray-button" @click="untapAll">全クリーチャーをアンタップ</button>
+          <button class="gray-button" @click="destloyAllCreatures">全クリーチャーを破壊</button>
+          <button class="gray-button" @click="initializeLife">ライフを初期化</button>
+        </div>
+        <div class="flex-grow mt-auto my-2">
+          <playerInfoView ref="own_life_counter" :cookie-key="cookieKey.LIFE"/>
+        </div>
+        <div class="mt-auto">
+          <ModifyView class="border rounded" />
+        </div>
       </div>
     </div>
+    <!-- 右列 -->
     <div class="flex flex-col flex-none">
       <button class="gray-button" @click="hideSource = !hideSource">表示切り替え</button>
       <div class="flex-grow" v-if="!hideSource">
@@ -27,11 +45,6 @@
         <label>クリーチャー一覧</label>
         <creatureListView :creatureList="creatureList"/>
       </div>
-    </div>
-    <div class="fixed flex flex-col left-0 bottom-0">
-      <button class="gray-button" @click="untapAll">全クリーチャーをアンタップ</button>
-      <button class="gray-button" @click="destloyAllCreatures">全クリーチャーを破壊</button>
-      <button class="gray-button" @click="initializeLife">ライフを初期化</button>
     </div>
   </div>
 </template>
