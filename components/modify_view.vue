@@ -15,7 +15,16 @@
 </template>
 
 <script lang="ts">
+import Global from '@/components/classes/global.ts';
+import ModifyValue from './classes/modify_value';
+
 export default{
+  props: {
+    cookieKey: {
+        type: String,
+        required: true,
+    },
+  },
   data() {
     return {
       powerModificationValue: 0,
@@ -24,13 +33,31 @@ export default{
   },
   watch: {
     powerModificationValue(newValue) {
-      this.$emit('powerEdited', newValue);
+      this.powerModificationValue = newValue;
+      Global.setToCookie(this.cookieKey, this.getModifyValue());
+      this.$emit('modifyValueEdited', this.getModifyValue());
     },
     toughnessModificationValue(newValue) {
-      this.$emit('toughnessEdited', newValue);
+      this.toughnessModificationValue = newValue;
+      Global.setToCookie(this.cookieKey, this.getModifyValue());
+      this.$emit('modifyValueEdited', this.getModifyValue());
     },
   },
+  mounted() {
+      try {
+        const temp = Global.getFromCookie(this.cookieKey);
+        if (ModifyValue.canConvert(temp)) {
+          this.powerModificationValue = temp.power;
+          this.toughnessModificationValue = temp.toughness;
+        }
+      }catch {
+        //
+      }
+    },
   methods: {
+    getModifyValue(): ModifyValue {
+      return ModifyValue.create(this.powerModificationValue, this.toughnessModificationValue);
+    },
     getPowerModificationValue(): number {
       return this.powerModificationValue;
     },

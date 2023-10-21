@@ -23,7 +23,7 @@
         </div>
         <!-- 全体修正 -->
         <div class="mt-auto">
-          <ModifyView class="border rounded" @powerEdited="applyPowerModification" @toughnessEdited="applyToughnessModification"/>
+          <ModifyView class="border rounded" :cookie-key="cookieKey.MODIFY_VALUE" @modifyValueEdited="applyOverallModification"/>
         </div>
       </div>
     </div>
@@ -57,6 +57,7 @@
   import Global from '@/components/classes/global.ts';
   import Creature from '@/components/classes/creature.ts';
   import Counter from '@/components/classes/counter.ts';
+  import ModifyValue from '@/components/classes/modify_value.ts';
 
   interface LifeCounterInfo {
     initialLifeValue: number
@@ -118,14 +119,10 @@
       getCounterListSource(): Counter[] {
         return this.$refs.counter_source_list.getCounterList()
       },
-      applyPowerModification(modifyValue: number): void {
+      applyOverallModification(modifyValue: ModifyValue): void {
         this.creatureList.forEach(c => {
-          c.status.powerBonus = modifyValue;
-        });
-      },
-      applyToughnessModification(modifyValue: number): void {
-        this.creatureList.forEach(c => {
-          c.status.toughnessBonus = modifyValue;
+          c.status.powerBonus = modifyValue.power;
+          c.status.toughnessBonus = modifyValue.toughness;
         });
       },
     },
