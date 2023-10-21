@@ -17,11 +17,13 @@
           <button class="gray-button" @click="destloyAllCreatures">全クリーチャーを破壊</button>
           <button class="gray-button" @click="initializeLife">ライフを初期化</button>
         </div>
+        <!-- ライフカウンター -->
         <div class="flex-grow mt-auto my-2">
           <playerInfoView ref="own_life_counter" :cookie-key="cookieKey.LIFE"/>
         </div>
+        <!-- 全体修正 -->
         <div class="mt-auto">
-          <ModifyView class="border rounded" />
+          <ModifyView class="border rounded" @powerEdited="applyPowerModification" @toughnessEdited="applyToughnessModification"/>
         </div>
       </div>
     </div>
@@ -115,6 +117,16 @@
       },
       getCounterListSource(): Counter[] {
         return this.$refs.counter_source_list.getCounterList()
+      },
+      applyPowerModification(modifyValue: number): void {
+        this.creatureList.forEach(c => {
+          c.status.powerBonus = modifyValue;
+        });
+      },
+      applyToughnessModification(modifyValue: number): void {
+        this.creatureList.forEach(c => {
+          c.status.toughnessBonus = modifyValue;
+        });
       },
     },
   }
