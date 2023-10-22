@@ -58,6 +58,8 @@
   import Creature from '@/components/classes/creature.ts';
   import Counter from '@/components/classes/counter.ts';
   import ModifyValue from '@/components/classes/modify_value.ts';
+  import ModifyView from "@/components/modify_view.vue";
+  import PlayerInfoView from "@/components/player_info_view.vue";
 
   interface LifeCounterInfo {
     initialLifeValue: number
@@ -98,8 +100,11 @@
       }
     },
     methods: {
-      initializeLife() {
-        this.$refs.own_life_counter.setLife(this.initialLifeValue)
+      initializeLife(): void {
+        const ref = this.$refs.own_life_counter as InstanceType<typeof PlayerInfoView>;
+        if (ref != null && ref != undefined) {
+          return ref.setLife(this.initialLifeValue)
+        }
       },
       destloyAllCreatures(): void {
         if (confirm("全クリーチャーを破壊します。よろしいですか？")){
@@ -127,7 +132,12 @@
       },
 
       _getModifyValue(): ModifyValue {
-        return this.$refs.modify_status.getModifyValue();
+        const ref = this.$refs.modify_status as InstanceType<typeof ModifyView>;
+        if (ref != null && ref != undefined) {
+          return ref.getModifyValue();
+        } else {
+          return new ModifyValue();
+        }
       }
     },
   }
