@@ -98,11 +98,13 @@ export default class Global {
     }
   }
 
-  static makeRegisterCreature(creature: Creature, placeId: number, modifyValue: ModifyValue): WithStatusCreature {
+  static makeRegisterCreature(creature: Creature, placeId: number, modifyValue: ModifyValue | null): WithStatusCreature {
     const status = this.makeStatus(placeId);
     const makeCreature = WithStatusCreature.create(creature, status);
-    makeCreature.status.powerBonus = modifyValue.power;
-    makeCreature.status.toughnessBonus = modifyValue.toughness;
+    if (modifyValue != undefined && modifyValue != null) {
+      makeCreature.status.powerBonus = modifyValue.power;
+      makeCreature.status.toughnessBonus = modifyValue.toughness;
+    }
     return makeCreature;
   }
 

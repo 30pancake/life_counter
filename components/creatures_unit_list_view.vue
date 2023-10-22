@@ -46,7 +46,7 @@
         pushCreatureByDragEvent(event: DragEvent): void {
             let creature = Global.getObjectDataFromDragEvent<Creature>(event, Creature.parseJson);
             let plateId = Global.getRegisterPlaceId(this.creatureList, creature);
-            let registerCreature = Global.makeRegisterCreature(creature, plateId);
+            let registerCreature = Global.makeRegisterCreature(creature, plateId, null);
             this.creatureList.push(registerCreature);
         },
         assignNewIdToCreature(event: DragEvent): void {
