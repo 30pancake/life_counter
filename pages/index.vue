@@ -23,7 +23,7 @@
         </div>
         <!-- 全体修正 -->
         <div class="mt-auto">
-          <ModifyView class="border rounded" :cookie-key="cookieKey.MODIFY_VALUE" @modifyValueEdited="applyOverallModification"/>
+          <ModifyView class="border rounded" ref = "modify_status" :cookie-key="cookieKey.MODIFY_VALUE" @modifyValueEdited="applyOverallModification"/>
         </div>
       </div>
     </div>
@@ -113,7 +113,7 @@
       },
       appendCreatureToCreaturesUnitList(creature: Creature): void {
         const plateId = this.creatureList.length == 0 ? 1 : Math.max(...this.creatureList.map(x => x.status.placeId)) + 1
-        let registerCreature = Global.makeRegisterCreature(creature, plateId);
+        let registerCreature = Global.makeRegisterCreature(creature, plateId, this._getModifyValue());
         this.creatureList.push(registerCreature);
       },
       getCounterListSource(): Counter[] {
@@ -125,6 +125,10 @@
           c.status.toughnessBonus = modifyValue.toughness;
         });
       },
+
+      _getModifyValue(): ModifyValue {
+        return this.$refs.modify_status.getModifyValue();
+      }
     },
   }
 </script>

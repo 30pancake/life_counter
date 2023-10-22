@@ -1,6 +1,7 @@
 import Creature from '@/components/classes/creature.ts';
 import WithStatusCreature from '@/components/classes/with_status_creature.ts';
 import CreatureStatus from '@/components/classes/creature_status.ts';
+import ModifyValue from '@/components/classes/modify_value.ts';
 
 export default class Global {
   static readonly DRAG_TEXT_DATA_KEY:string = "drag_data_text";
@@ -97,9 +98,12 @@ export default class Global {
     }
   }
 
-  static makeRegisterCreature(creature: Creature, placeId: number): WithStatusCreature {
-    let status = this.makeStatus(placeId);
-    return WithStatusCreature.create(creature, status);
+  static makeRegisterCreature(creature: Creature, placeId: number, modifyValue: ModifyValue): WithStatusCreature {
+    const status = this.makeStatus(placeId);
+    const makeCreature = WithStatusCreature.create(creature, status);
+    makeCreature.status.powerBonus = modifyValue.power;
+    makeCreature.status.toughnessBonus = modifyValue.toughness;
+    return makeCreature;
   }
 
   static getRegisterPlaceId(creatures: WithStatusCreature[], makeCreature: Creature): number {
