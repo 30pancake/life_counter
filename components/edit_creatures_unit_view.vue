@@ -49,7 +49,7 @@
       initCreatureCounts(): void {
         this.counterCountList.splice(0);
         const counters = this.withStatusCreature.status.counters;
-        const counterHashSet = this.getCounterHashSet(this.allCounterList != undefined ? this.allCounterList() : counters);
+        const counterHashSet = this.getCounterHashSet(this.allCounterList != undefined ? this.allCounterList : counters);
         counterHashSet.forEach(c => {
           this.counterCountList.push(new DataCount(c, this.getCounterCount(counters, c)));
         });

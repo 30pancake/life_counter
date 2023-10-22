@@ -19,8 +19,8 @@
           required: true,
         },
         allCounterList: {
-          type: Array<Counter>,
-          required: false,
+          type: Function,
+          required: true,
         },
     },
     computed: {

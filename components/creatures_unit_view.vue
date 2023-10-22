@@ -25,7 +25,7 @@
   </div>
   <!-- モーダル -->
   <modalView :show="showingModal">
-    <EditCreaturesUnitView :withStatusCreature="getCreatureList[0]" :allCounterList="allCounterList"
+    <EditCreaturesUnitView :withStatusCreature="getCreatureList[0]" :allCounterList="allCounterList()"
     @end="closeModal" @counterCountsEdited="editCounter"/>
   </modalView>
 </template>
@@ -48,8 +48,8 @@
         required: true, 
       },
       allCounterList: {
-        type: Array<Counter>,
-        required: false,
+        type: Function,
+        required: true,
       },
     },
 
