@@ -19,6 +19,8 @@ import Global from '@/components/classes/global.ts';
 import ModifyValue from './classes/modify_value';
 
 export default{
+  emits: ['modifyValueEdited', 'modifyValueEdited'],
+
   props: {
     cookieKey: {
         type: String,

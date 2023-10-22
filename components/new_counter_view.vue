@@ -31,6 +31,8 @@
   import Counter from '@/components/classes/counter.ts';
 
   export default {
+    emits: ['counterCreated', 'end'],
+
     data() {
       return {
         counter: Counter.create("", 0, 0),

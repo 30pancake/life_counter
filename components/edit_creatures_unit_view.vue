@@ -24,6 +24,8 @@
   import WithStatusCreature from '@/components/classes/with_status_creature.ts';
 
   export default {
+    emits: ['counterCountsEdited', 'end'],
+
     props: {
         withStatusCreature: {
             type: WithStatusCreature,

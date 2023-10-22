@@ -35,6 +35,8 @@
   import Creature from '@/components/classes/creature.ts';
 
   export default {
+    emits: ['creatureCreated', 'end'],
+
     data() {
       return {
         creature: Creature.create("", 1, 1, ""),

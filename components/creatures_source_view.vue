@@ -29,6 +29,8 @@
   }
 
   export default {
+    emits: ['makeCreatureRequired'],
+
     props: {
         cookieKey: {
             type: String,
