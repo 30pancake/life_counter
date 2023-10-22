@@ -60,6 +60,7 @@
   import ModifyValue from '@/components/classes/modify_value.ts';
   import ModifyView from "@/components/modify_view.vue";
   import PlayerInfoView from "@/components/player_info_view.vue";
+  import CountersSourceView from "@/components/counters_source_view.vue";
 
   interface LifeCounterInfo {
     initialLifeValue: number
@@ -122,7 +123,12 @@
         this.creatureList.push(registerCreature);
       },
       getCounterListSource(): Counter[] {
-        return this.$refs.counter_source_list.getCounterList()
+        const ref = this.$refs.counter_source_list as InstanceType<typeof CountersSourceView>;
+        if (ref != null && ref != undefined) {
+          return ref.getCounterList();
+        } else {
+          return new Array<Counter>();
+        }
       },
       applyOverallModification(modifyValue: ModifyValue): void {
         this.creatureList.forEach(c => {
