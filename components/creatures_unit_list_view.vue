@@ -10,7 +10,6 @@
   import Creature from '@/components/classes/creature.ts';
   import WithStatusCreature from '@/components/classes/with_status_creature.ts';
   import Global from '@/components/classes/global.ts';
-  import Counter from '@/components/classes/counter.ts';
 
   export default {
     props: {

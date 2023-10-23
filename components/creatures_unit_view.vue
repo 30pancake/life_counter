@@ -22,12 +22,12 @@
       <button class="blue-button" @click="increaseTap()">+</button>
       <button class="blue-button" @click="allTap()">All</button>
     </div>
+    <!-- モーダル -->
+    <modalView :show="showingModal">
+      <EditCreaturesUnitView :withStatusCreature="getCreatureList[0]" :allCounterList="allCounterList()"
+      @end="closeModal" @counterCountsEdited="editCounter"/>
+    </modalView>
   </div>
-  <!-- モーダル -->
-  <modalView :show="showingModal">
-    <EditCreaturesUnitView :withStatusCreature="getCreatureList[0]" :allCounterList="allCounterList()"
-    @end="closeModal" @counterCountsEdited="editCounter"/>
-  </modalView>
 </template>
 
 <script lang="ts">
