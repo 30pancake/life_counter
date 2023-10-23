@@ -51,4 +51,44 @@ export default class CreatureStatus {
       throw new Error();
     }
   }
+
+  static compare(obj1: CreatureStatus, obj2: CreatureStatus, comparePlaceId: boolean, compareTap: boolean): boolean {
+    if (obj1 == null || obj1 == undefined || obj2 == null || obj2 == undefined) {
+      return false;
+    } else {
+      return (comparePlaceId ? obj1.placeId == obj2.placeId : true) &&
+             (compareTap ? obj1.tap == obj2.tap : true) &&
+             obj1.powerBonus == obj2.powerBonus &&
+             obj1.toughnessBonus == obj2.toughnessBonus &&
+             CreatureStatus._compareCounters(obj1.counters, obj2.counters);
+    }
+  }
+
+  static _compareCounters(obj1: Counter[], obj2: Counter[]): boolean {
+    if (obj1 == null || obj1 == undefined || obj2 == null || obj2 == undefined) {
+      return false;
+    } else if (obj1.length != obj2.length) {
+      return false;
+    } else if (obj1.length == 0 && obj2.length == 0) {
+      return true;
+    } else {
+      var counterHashList = CreatureStatus._getCounterHashList(obj1);
+      counterHashList.forEach(counter => {
+        if (obj1.filter(c => Counter.compare(c, counter)).length != obj2.filter(c => Counter.compare(c, counter)).length) {
+          return false;
+        }
+      });
+      return true;
+    }
+  }
+
+  static _getCounterHashList(counters: Counter[]): Counter[] {
+    const counterHashList = new Array<Counter>();
+    counters.forEach(c => {
+      if (!counterHashList.some(x => Counter.compare(c, x))){
+        counterHashList.push(c);
+      }      
+    });
+    return counterHashList;
+  }
 }

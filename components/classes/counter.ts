@@ -63,4 +63,14 @@ export default class Counter implements Equals {
       throw new Error();
     }
   }
+
+  static compare(obj1: Counter, obj2: Counter): boolean {
+    if (obj1 == null || obj1 == undefined || obj2 == null || obj2 == undefined) {
+      return false;
+    } else {
+      return obj1.name == obj2.name &&
+             obj1.powerBonus == obj2.powerBonus &&
+             obj1.toughnessBonus == obj2.toughnessBonus;
+    }
+  }
 }
