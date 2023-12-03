@@ -148,23 +148,23 @@
 
       _sortCreaturesList(): void {
         const creaturList = new Array<WithStatusCreature>();//最終的に、このリストのインデックス＋１をPlaceIDとする
-          this.creatureList.forEach(c => {
-            if (creaturList.filter(creature => WithStatusCreature.compare(c, creature)).length == 0) {
-              creaturList.push(c);
-            }
-          });
-          creaturList.sort((a, b) => {
-            if (a.name != b.name) {
-              return a.name > b.name ? 1 : -1;
-            }
-            if (a.status.counters.length != b.status.counters.length) {
-              return a.status.counters.length - b.status.counters.length;
-            }
-            return 1;
-          });
-          this.creatureList.forEach(c => {
-            c.status.placeId = creaturList.findIndex(x => WithStatusCreature.compare(c, x)) + 1;            
-          });
+        this.creatureList.forEach(c => {
+          if (creaturList.filter(creature => WithStatusCreature.compare(c, creature)).length == 0) {
+            creaturList.push(c);
+          }
+        });
+        creaturList.sort((a, b) => {
+          if (a.name != b.name) {
+            return a.name > b.name ? 1 : -1;
+          }
+          if (a.status.counters.length != b.status.counters.length) {
+            return a.status.counters.length - b.status.counters.length;
+          }
+          return 1;
+        });
+        this.creatureList.forEach(c => {
+          c.status.placeId = creaturList.findIndex(x => WithStatusCreature.compare(c, x)) + 1;            
+        });
       },
     },
   }
