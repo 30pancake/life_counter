@@ -73,13 +73,9 @@ export default class CreatureStatus {
       return true;
     } else {
       var counterHashList = CreatureStatus._getCounterHashList(obj1);
-      var result = true;
-      counterHashList.forEach(counter => {
-        if (obj1.filter(c => Counter.compare(c, counter)).length != obj2.filter(c => Counter.compare(c, counter)).length) {
-          result = false;
-        }
-      });
-      return result;
+      return counterHashList.every(counter =>
+        obj1.filter(c => Counter.compare(c, counter)).length == obj2.filter(c => Counter.compare(c, counter)).length
+      );
     }
   }
 
