@@ -40,12 +40,12 @@ export default class CreatureStatus {
   static canConvert(obj: any): boolean {
     return "placeId" in obj && "tap" in obj && "counters" in obj && "powerBonus" in obj && "toughnessBonus" in obj &&
            obj.counters instanceof Array &&
-           obj.counters.every(x => Counter.canConvert(x));
+           obj.counters.every((x:any) => Counter.canConvert(x));
   }
 
   static convert(obj: any): CreatureStatus {
-    if (this.canConvert(obj) && obj.counters.every(x => Counter.canConvert(x))) {
-      const counters = obj.counters.map(x => Counter.convert(x));
+    if (this.canConvert(obj) && obj.counters.every((x:any) => Counter.canConvert(x))) {
+      const counters = obj.counters.map((x:any) => Counter.convert(x));
       return CreatureStatus.create(obj.placeId, obj.tap, counters, obj.powerBonus, obj.toughnessBonus);
     } else {
       throw new Error();
