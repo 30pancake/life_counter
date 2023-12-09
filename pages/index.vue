@@ -1,5 +1,5 @@
 <template>
-  <div class="full-height flex">
+  <div class="flex" ref="content">
     <!-- メインフィールド -->
     <div class="flex flex-col flex-grow">
       <!-- フィールド -->
@@ -51,13 +51,6 @@
   </div>
 </template>
 
-<style scoped>
-.full-height {
-  height: calc(100vh - 70px);
-  overflow-y: auto; /* スクロールが必要な場合に追加 */
-}
-</style>
-
 <script lang="ts">
   import WithStatusCreature from '@/components/classes/with_status_creature.ts';
   import CookieKey from '@/components/classes/cookie_key.ts';
@@ -98,6 +91,8 @@
     },
     mounted() {
       try {
+        this.adjustHeight();
+        window.addEventListener('resize', this.adjustHeight);
         const temp = Global.getFromCookie(this.cookieKey.CREATURE_LIST);
         if (temp instanceof Array) {
           this.creatureList = temp.filter(x => WithStatusCreature.canConvert(x))
@@ -106,6 +101,9 @@
       } catch {
         //
       }
+    },
+    destroyed() {
+      window.removeEventListener('resize', this.adjustHeight);
     },
     methods: {
       initializeLife(): void {
@@ -143,7 +141,10 @@
           c.status.toughnessBonus = modifyValue.toughness;
         });
       },
-
+      adjustHeight() {
+        const viewportHeight = window.innerHeight;
+        this.$refs.content.style.height = `${viewportHeight}px`;
+      },
       _getModifyValue(): ModifyValue {
         const ref = this.$refs.modify_status as InstanceType<typeof ModifyView>;
         if (ref != null && ref != undefined) {
