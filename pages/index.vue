@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 100vh;" class="flex">
+  <div class="full-height flex">
     <!-- メインフィールド -->
     <div class="flex flex-col flex-grow">
       <!-- フィールド -->
@@ -50,6 +50,13 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+.full-height {
+  height: calc(100vh - 50px);
+  overflow-y: auto; /* スクロールが必要な場合に追加 */
+}
+</style>
 
 <script lang="ts">
   import WithStatusCreature from '@/components/classes/with_status_creature.ts';
