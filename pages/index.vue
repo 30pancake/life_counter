@@ -53,7 +53,7 @@
 
 <style scoped>
 .full-height {
-  height: calc(100vh - 50px);
+  height: calc(100vh - 70px);
   overflow-y: auto; /* スクロールが必要な場合に追加 */
 }
 </style>
