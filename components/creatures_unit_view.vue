@@ -22,11 +22,12 @@
       <button class="blue-button" @click="increaseTap()">+</button>
       <button class="blue-button" @click="allTap()">All</button>
     </div>
+    <!-- モーダル -->
+    <modalView :show="showingModal">
+      <EditCreaturesUnitView :withStatusCreature="getCreatureList[0]" :allCounterList="allCounterList()"
+      @end="closeModal" @counterCountsEdited="editCounter"/>
+    </modalView>
   </div>
-  <!-- モーダル -->
-  <modalView :show="showingModal">
-    <EditCreaturesUnitView :withStatusCreature="getCreatureList[0]" @end="closeModal" @counterCountsEdited="editCounter"/>
-  </modalView>
 </template>
 
 <script lang="ts">
@@ -45,6 +46,10 @@
       creatureList: {
         type: Array<WithStatusCreature>,
         required: true, 
+      },
+      allCounterList: {
+        type: Function,
+        required: true,
       },
     },
 
@@ -86,19 +91,21 @@
 
       getCounterText(): string {
         let creatures = this.getCreatureList;
-        if (creatures.length > 0) {
-          let counters = creatures[0].status.counters;
-          let counterShowTextSet = new Set(counters.map(x => x.name));
-          let showTextAndCountList: { [key: string]: number; } = {};
-          counterShowTextSet.forEach(showText => {
-            let count = counters.filter(x => x.name == showText).length;
-            showTextAndCountList[showText] = count;
-          });
-          return Object.entries(showTextAndCountList).map(([key, value]) => value == 1 ? `${key}` : `${key}x${value.toString()}`)
-                                                    .join('/');
-        } else {
-          return "";
+        if (creatures.length == 0) {
+          return "-"; 
         }
+        let counters = creatures[0].status.counters;
+        if (counters.length == 0) {
+          return "-"; 
+        }
+        let counterShowTextSet = new Set(counters.map(x => x.name));
+        let showTextAndCountList: { [key: string]: number; } = {};
+        counterShowTextSet.forEach(showText => {
+          let count = counters.filter(x => x.name == showText).length;
+          showTextAndCountList[showText] = count;
+        });
+        return Object.entries(showTextAndCountList).map(([key, value]) => value == 1 ? `${key}` : `${key}x${value.toString()}`)
+                                                   .join('/');
       },
     },
 

@@ -1,3 +1,8 @@
+import Creature from '@/components/classes/creature.ts';
+import WithStatusCreature from '@/components/classes/with_status_creature.ts';
+import CreatureStatus from '@/components/classes/creature_status.ts';
+import ModifyValue from '@/components/classes/modify_value.ts';
+
 export default class Global {
   static readonly DRAG_TEXT_DATA_KEY:string = "drag_data_text";
 
@@ -91,5 +96,36 @@ export default class Global {
     } else {
       throw Error();
     }
+  }
+
+  static makeRegisterCreature(creature: Creature, placeId: number, modifyValue: ModifyValue | null): WithStatusCreature {
+    const status = this.makeStatus(placeId);
+    const makeCreature = WithStatusCreature.create(creature, status);
+    if (modifyValue != undefined && modifyValue != null) {
+      makeCreature.status.powerBonus = modifyValue.power;
+      makeCreature.status.toughnessBonus = modifyValue.toughness;
+    }
+    return makeCreature;
+  }
+
+  static getRegisterPlaceId(creatures: WithStatusCreature[], makeCreature: Creature): number {
+    if (creatures.length == 0) {
+      return 1;
+    } else {
+      let candidate = creatures.filter(x => x.status.counters.length == 0)
+        .find(x => makeCreature.equals(x));
+      if (candidate != undefined) {
+          return candidate.status.placeId;
+      }
+      else {
+          return Math.max(...creatures.map(x => x.status.placeId)) + 1;
+      }
+    }
+  }
+
+  static makeStatus(id: number): CreatureStatus {
+    let status = new CreatureStatus();
+    status.placeId = id;
+    return status;
   }
 }

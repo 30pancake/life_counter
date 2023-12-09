@@ -71,4 +71,15 @@ export default class Creature implements Equals {
       throw new Error();
     }
   }
+
+  static compare(obj1: Creature, obj2: Creature): boolean {
+    if (obj1 == null || obj1 == undefined || obj2 == null || obj2 == undefined) {
+      return false;
+    } else {
+      return obj1.name == obj2.name &&
+             obj1.power == obj2.power &&
+             obj1.toughness == obj2.toughness &&
+             obj1.ability == obj2.ability;
+    }
+  }
 }

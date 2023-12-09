@@ -4,12 +4,15 @@
       <tr v-for="creature in creatureList" draggable="true" @dragstart="creatureDragStartHandler($event, creature)">
         <td>{{ creature.name + " " + creature.getPowerToughnessText() }}</td>
         <td>
+          <button class="gray-button" @click="requireMakeCreature(creature)">追加</button>
+        </td>
+        <td>
           <button class="gray-button" @click="deleteCreature(creature)">削除</button>
         </td>
       </tr>
     </tbody>
   </table>
-  <button class="gray-button" @click="showModal">追加</button>
+  <button class="gray-button" @click="showModal">作成</button>
   <!-- モーダル -->
   <modalView :show="showingModal">
     <NewCreatureView @end="closeModal" @creatureCreated="appendCreature"/>
@@ -26,10 +29,12 @@
   }
 
   export default {
+    emits: ['makeCreatureRequired'],
+
     props: {
         cookieKey: {
             type: String,
-            required: false,
+            required: true,
         },
     },
     data(): CreatureSourceInfo {
@@ -64,6 +69,9 @@
     methods: {
       creatureDragStartHandler(event: DragEvent, creature: Creature) {
         Global.setObjectDataToDragEvent(event, creature);
+      },
+      requireMakeCreature(creature: Creature): void {
+        this.$emit('makeCreatureRequired', creature);
       },
       appendCreature(creature: Creature): void {
         this.creatureList.push(creature);

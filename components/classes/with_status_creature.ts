@@ -63,4 +63,9 @@ export default class WithStatusCreature extends Creature {
   static convert(obj: any): WithStatusCreature {
     return this.create(Creature.convert(obj), CreatureStatus.convert(obj.status));
   }
+
+  static compare(obj1: WithStatusCreature, obj2: WithStatusCreature): boolean {
+    return Creature.compare(obj1, obj2) &&
+           CreatureStatus.compare(obj1.status, obj2.status, false, false);
+  }
 }

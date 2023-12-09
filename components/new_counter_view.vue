@@ -31,6 +31,8 @@
   import Counter from '@/components/classes/counter.ts';
 
   export default {
+    emits: ['counterCreated', 'end'],
+
     data() {
       return {
         counter: Counter.create("", 0, 0),
@@ -45,7 +47,8 @@
         this.$emit('end');
       },
       getCounter(): Counter {
-        return this.counter;
+        //this.creatureをそのまま返すと、パワーとタフネスがstringになっている場合があるので作成しなおす
+        return Counter.create(this.counter.name, Number(this.counter.powerBonus), Number(this.counter.toughnessBonus))
       },
     }
   }
