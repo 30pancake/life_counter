@@ -66,7 +66,10 @@ export default{
     getToughnessModificationValue(): number {
       return this.toughnessModificationValue;
     },
-
+    setModifyValue(modifyValue: ModifyValue): void {
+      this.powerModificationValue = modifyValue.power;
+      this.toughnessModificationValue = modifyValue.toughness;
+    },
     //private method
     _increasePower(increaseValue: number): void {
       this.powerModificationValue += increaseValue;
