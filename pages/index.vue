@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen flex">
+  <div style="height: 100vh;" class="flex">
     <!-- メインフィールド -->
     <div class="flex flex-col flex-grow">
       <!-- フィールド -->
