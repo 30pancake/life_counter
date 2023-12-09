@@ -1,5 +1,5 @@
 <template>
-  <div draggable="true" @dragstart="dragStartHandler($event)" @drop="dropHandler($event)" @dragover.prevent>
+  <div :style="{ backgroundColor: _getViewBackgroundColor() }" draggable="true" @dragstart="dragStartHandler($event)" @drop="dropHandler($event)" @dragover.prevent>
     <div class="flex flex-row justify-around">
       <button class="red-button" @click="decreseCreature()">-</button>
       <label>{{ getTotalCreatureCount }}</label>
@@ -233,6 +233,14 @@
 
       closeModal(): void {
         this.showingModal = false;
+      },
+
+      _getViewBackgroundColor() {
+        if (this.getCreatureCount(false)) {
+          return '#ffffff00';
+        } else {
+          return '#d3d3d3ff';
+        }
       },
     },
   }

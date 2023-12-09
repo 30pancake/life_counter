@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-row flex-wrap">
-    <div class="m-2 border rounded" v-for="placeId in getPlaceIdList">
-      <CreaturesUnitView class="w-36 h-48" :id=placeId :creatureList="creatureList" :allCounterList="allCounterList"/>
+    <div class="m-1 border rounded" v-for="placeId in getPlaceIdList">
+      <CreaturesUnitView class="w-40 h-48" :id=placeId :creatureList="creatureList" :allCounterList="allCounterList"/>
     </div>
   </div>
 </template>
