@@ -92,7 +92,8 @@ export default class Global {
 
   static setToCookie(key: string, value: any): void {
     if (!Global.isEmptyString(key)) {
-      useCookie(key).value = value;
+      const cookieMaxAge = 60 * 60 * 24 * 365 * 3;//保存期間はとりあえず3年にしておく
+      useCookie(key, { maxAge: cookieMaxAge }).value = value;
     } else {
       throw Error();
     }

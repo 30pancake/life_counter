@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen flex">
+  <div class="flex" ref="content">
     <!-- メインフィールド -->
     <div class="flex flex-col flex-grow">
       <!-- フィールド -->
@@ -15,7 +15,7 @@
           <button class="gray-button" @click="_sortCreaturesList">クリーチャーをソート</button>
           <button class="gray-button" @click="untapAll">全クリーチャーをアンタップ</button>
           <button class="gray-button" @click="destloyAllCreatures">全クリーチャーを破壊</button>
-          <button class="gray-button" @click="initializeLife">ライフを初期化</button>
+          <button class="gray-button" @click="_initializeLifeAndModifyValue">ライフ、修正値を初期化</button>
         </div>
         <!-- ライフカウンター -->
         <div class="flex-grow mt-auto my-2">
@@ -91,6 +91,8 @@
     },
     mounted() {
       try {
+        this.adjustHeight();
+        window.addEventListener('resize', this.adjustHeight);
         const temp = Global.getFromCookie(this.cookieKey.CREATURE_LIST);
         if (temp instanceof Array) {
           this.creatureList = temp.filter(x => WithStatusCreature.canConvert(x))
@@ -100,13 +102,10 @@
         //
       }
     },
+    destroyed() {
+      window.removeEventListener('resize', this.adjustHeight);
+    },
     methods: {
-      initializeLife(): void {
-        const ref = this.$refs.own_life_counter as InstanceType<typeof PlayerInfoView>;
-        if (ref != null && ref != undefined) {
-          return ref.setLife(this.initialLifeValue)
-        }
-      },
       destloyAllCreatures(): void {
         if (confirm("全クリーチャーを破壊します。よろしいですか？")){
           this.creatureList.splice(0);
@@ -136,7 +135,17 @@
           c.status.toughnessBonus = modifyValue.toughness;
         });
       },
-
+      adjustHeight() {
+        const viewportHeight = window.innerHeight;
+        this.$refs.content.style.height = `${viewportHeight}px`;
+      },
+      _initializeLifeAndModifyValue(): void {
+        const ref = this.$refs.own_life_counter as InstanceType<typeof PlayerInfoView>;
+        if (ref != null && ref != undefined) {
+          ref.setLife(this.initialLifeValue)
+        }
+        this.$refs.modify_status.setModifyValue(ModifyValue.create(0, 0));
+      },
       _getModifyValue(): ModifyValue {
         const ref = this.$refs.modify_status as InstanceType<typeof ModifyView>;
         if (ref != null && ref != undefined) {
