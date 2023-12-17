@@ -14,6 +14,7 @@
     </div>
     <div class="flex flex-row justify-around">
       <label>{{ getCreatureCount(false) }}</label>
+      <label>tap</label>
       <label>{{ getCreatureCount(true) }}</label>
     </div>
     <div class="flex flex-row justify-around">
